@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="cb98dfa9-1395-4746-8d04-f90d556de194" name="Default Changelist" comment="" />
+    <list default="true" id="cb98dfa9-1395-4746-8d04-f90d556de194" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/LiftModel/LiftOperator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/LiftModel/LiftOperator.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/LiftModel/LiftOperatorModelTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/LiftModel/LiftOperatorModelTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/LiftModel/enums/LiftOperatorStates.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/LiftModel/enums/LiftOperatorStates.java" afterDir="false" />
+    </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
@@ -15,11 +20,33 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/test/java/LiftModel/LiftOperatorModelTest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="415">
-              <caret line="120" column="47" selection-start-line="120" selection-start-column="47" selection-end-line="120" selection-end-column="47" />
+            <state relative-caret-position="722">
+              <caret line="189" column="20" selection-start-line="189" selection-start-column="20" selection-end-line="189" selection-end-column="20" />
               <folding>
                 <element signature="imports" expanded="true" />
+                <element signature="e#5315#5316#0" expanded="true" />
+                <element signature="e#5390#5391#0" expanded="true" />
+                <element signature="e#6354#6355#0" expanded="true" />
+                <element signature="e#6429#6430#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/LiftModel/LiftOperator.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="68">
+              <caret line="4" selection-start-line="4" selection-end-line="9" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/test/java/LiftModel/enums/LiftOperatorStates.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="102">
+              <caret line="6" column="32" selection-start-line="6" selection-start-column="32" selection-end-line="6" selection-end-column="32" />
             </state>
           </provider>
         </entry>
@@ -69,9 +96,9 @@
       </MavenImportingSettings>
     </option>
   </component>
-  <component name="ProjectFrameBounds" extendedState="7">
-    <option name="x" value="-8" />
-    <option name="y" value="-8" />
+  <component name="ProjectFrameBounds">
+    <option name="x" value="-6" />
+    <option name="y" value="2" />
     <option name="width" value="1936" />
     <option name="height" value="1056" />
   </component>
@@ -83,7 +110,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="PackagesPane" />
       <pane id="ProjectPane">
         <subPane>
@@ -152,12 +178,13 @@
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1549996506026" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1550417302147" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/pom.xml" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
@@ -248,23 +275,12 @@
       <workItem from="1549306478786" duration="295000" />
       <workItem from="1549306820423" duration="3401000" />
       <workItem from="1549364728936" duration="1209000" />
-      <workItem from="1549985697726" duration="4840000" />
+      <workItem from="1549985697726" duration="5505000" />
+      <workItem from="1550402377248" duration="10008000" />
     </task>
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="PaymentSystemOperatorModelTest_TelephoneSystemModelRunner - 2019.01.01 at 21h 29m 02s.xml">
-      <configuration name="PaymentSystemOperatorModelTest.TelephoneSystemModelRunner" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="PaymentSystemOperatorModelTest - 2019.01.02 at 12h 03m 52s.xml">
-      <configuration name="PaymentSystemOperatorModelTest" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="PaymentSystemOperatorModelTest_TelephoneSystemModelRunner - 2019.01.02 at 12h 04m 13s.xml">
-      <configuration name="PaymentSystemOperatorModelTest.TelephoneSystemModelRunner" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="PaymentSystemOperatorModelTest - 2019.01.02 at 12h 51m 04s.xml">
-      <configuration name="PaymentSystemOperatorModelTest" configurationId="JUnit" />
-    </history-entry>
     <history-entry file="PaymentSystemOperatorModelTest - 2019.01.14 at 11h 58m 08s.xml">
       <configuration name="PaymentSystemOperatorModelTest" configurationId="JUnit" />
     </history-entry>
@@ -283,9 +299,21 @@
     <history-entry file="LiftOperatorModelTest - 2019.02.04 at 20h 04m 20s.xml">
       <configuration name="LiftOperatorModelTest" configurationId="JUnit" />
     </history-entry>
+    <history-entry file="LiftOperatorModelTest - 2019.02.12 at 19h 31m 59s.xml">
+      <configuration name="LiftOperatorModelTest" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="LiftOperatorModelTest - 2019.02.12 at 19h 32m 27s.xml">
+      <configuration name="LiftOperatorModelTest" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="LiftOperatorModelTest - 2019.02.12 at 19h 33m 12s.xml">
+      <configuration name="LiftOperatorModelTest" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="LiftOperatorModelTest - 2019.02.12 at 19h 34m 44s.xml">
+      <configuration name="LiftOperatorModelTest" configurationId="JUnit" />
+    </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="71276000" />
+    <option name="totallyTimeSpent" value="81949000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -297,10 +325,9 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
-    <editor active="true" />
+    <frame x="-6" y="2" width="1936" height="1056" extended-state="0" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.22761194" />
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.1652452" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -309,7 +336,7 @@
       <window_info id="Favorites" order="6" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" />
-      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.49946696" visible="true" weight="0.36944744" />
+      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.49946696" weight="0.36944744" />
       <window_info anchor="bottom" id="Debug" order="3" weight="0.3997833" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -566,29 +593,33 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/java/LiftModel/enums/LiftOperatorStates.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="85">
-          <caret line="5" column="29" selection-start-line="5" selection-start-column="4" selection-end-line="5" selection-end-column="29" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/ModelJUnit.iml">
       <provider selected="true" editor-type-id="text-editor" />
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/LiftModel/enums/LiftOperatorStates.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="102">
+          <caret line="6" column="32" selection-start-line="6" selection-start-column="32" selection-end-line="6" selection-end-column="32" />
+        </state>
+      </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/LiftModel/LiftOperator.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="68">
-          <caret line="4" selection-start-line="4" selection-end-line="5" selection-end-column="39" />
+          <caret line="4" selection-start-line="4" selection-end-line="9" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/test/java/LiftModel/LiftOperatorModelTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="415">
-          <caret line="120" column="47" selection-start-line="120" selection-start-column="47" selection-end-line="120" selection-end-column="47" />
+        <state relative-caret-position="722">
+          <caret line="189" column="20" selection-start-line="189" selection-start-column="20" selection-end-line="189" selection-end-column="20" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="e#5315#5316#0" expanded="true" />
+            <element signature="e#5390#5391#0" expanded="true" />
+            <element signature="e#6354#6355#0" expanded="true" />
+            <element signature="e#6429#6430#0" expanded="true" />
           </folding>
         </state>
       </provider>

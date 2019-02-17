@@ -2,51 +2,61 @@ package LiftModel;
 
 public class LiftOperator {
 
-    private  boolean Door_Open = false;
-    private  boolean Lift_Move = false;
+    private  boolean DoorOpen = false;
+    private  boolean LiftMoveUp = false;
+    private  boolean LiftMoveDown = false;
+    private  boolean LiftBetweenFloors = false;
+    private boolean ButtonPress = false;
 
-  //  private  boolean Lift_At_Destination = false;
-    private  boolean Lift_BetweenFloors = false;
 
-    boolean isDoorOpen() {return  Door_Open;}
+    boolean isDoorOpen() {return  DoorOpen;}
+    boolean isLiftMovingUp() {return  LiftMoveUp;}
+    boolean isLiftMovingDown() {return  LiftMoveDown;}
+    boolean isLiftBetweenFloors(){ return  LiftBetweenFloors;}
+    boolean isButtonPressed(){return ButtonPress;}
 
-    boolean isLiftMoving() {return  Lift_Move;}
-
- //   boolean isLiftAtDestination(){ return  Lift_At_Destination;}
-
-    boolean isLiftBetweenFloors(){ return  Lift_BetweenFloors;}
-
-  /*   void liftArrivedAtDestination(){
-        if(!Door_Open && Lift_Stationary){
-            Door_Open = true;
-        } else if(Door_Close && Lift_Move){
-            Lift_Move = false;
-            Lift_Stationary = true;
-        }
-    }*/
 
     void openLiftDoors(){
-        if(!Lift_Move){
-           Door_Open = true;
-        }
+        if( !LiftBetweenFloors){
+            if(!LiftMoveUp &&!LiftMoveDown && ButtonPress ){
+                DoorOpen = true;
+                ButtonPress = false;
+            } else if(  (LiftMoveUp || LiftMoveDown) && !DoorOpen && !ButtonPress) {
+                LiftMoveUp = false;
+                LiftMoveDown = false;
+                DoorOpen = true;
 
-        if(  Lift_Move && !Door_Open ) {
-            Door_Open = true;
-            Lift_Move = false;
+            }
         }
     }
 
     void closeLiftDoor(){
-        if(!Lift_Move&& Door_Open){
-            Door_Open = false;
-
+        if(!LiftMoveUp &&!LiftMoveDown&& DoorOpen && !LiftBetweenFloors ){
+            DoorOpen = false;
         }
     }
 
-    void liftMoving(){
-        if(!Door_Open  && !Lift_Move){
+    void liftMoveUp(){
+        if(ButtonPress  && !LiftMoveUp && !LiftMoveDown && !DoorOpen) {
+            ButtonPress=false;
+            LiftMoveUp = true;
+        }
+    }
 
-            Lift_Move = true;
+    void liftMoveDown(){
+        if(ButtonPress  && !LiftMoveUp && !LiftMoveDown && !DoorOpen) {
+            ButtonPress=false;
+            LiftMoveDown = true;
+        }
+    }
+
+    void buttonPressed(){
+        if(!ButtonPress && !LiftMoveDown && !LiftMoveUp){
+            ButtonPress = true;
+        } else if(ButtonPress && !DoorOpen && (LiftMoveUp || LiftMoveDown) ){
+            ButtonPress = false;
+        } else if(ButtonPress && !LiftMoveDown && !LiftMoveUp  && DoorOpen){
+            DoorOpen = false;
         }
     }
 
