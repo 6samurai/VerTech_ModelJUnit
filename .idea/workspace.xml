@@ -6,6 +6,9 @@
       <change beforePath="$PROJECT_DIR$/src/main/java/LiftModel/LiftOperator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/LiftModel/LiftOperator.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/java/LiftModel/LiftOperatorModelTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/LiftModel/LiftOperatorModelTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/java/LiftModel/enums/LiftOperatorStates.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/LiftModel/enums/LiftOperatorStates.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/LiftModel/LiftOperator.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/LiftModel/LiftOperator.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/test-classes/LiftModel/LiftOperatorModelTest.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/test-classes/LiftModel/LiftOperatorModelTest.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/test-classes/LiftModel/enums/LiftOperatorStates.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/test-classes/LiftModel/enums/LiftOperatorStates.class" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
     <ignored path="$PROJECT_DIR$/target/" />
@@ -20,15 +23,79 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/test/java/LiftModel/LiftOperatorModelTest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="722">
-              <caret line="189" column="20" selection-start-line="189" selection-start-column="20" selection-end-line="189" selection-end-column="20" />
+            <state relative-caret-position="440">
+              <caret line="172" column="47" selection-start-line="172" selection-start-column="47" selection-end-line="172" selection-end-column="47" />
               <folding>
                 <element signature="imports" expanded="true" />
-                <element signature="e#5315#5316#0" expanded="true" />
-                <element signature="e#5390#5391#0" expanded="true" />
-                <element signature="e#6354#6355#0" expanded="true" />
-                <element signature="e#6429#6430#0" expanded="true" />
+                <element signature="e#858#859#0" expanded="true" />
+                <element signature="e#891#892#0" expanded="true" />
+                <element signature="e#2812#2813#0" expanded="true" />
+                <element signature="e#2887#2888#0" expanded="true" />
+                <element signature="e#3250#3251#0" expanded="true" />
+                <element signature="e#3325#3326#0" expanded="true" />
+                <element signature="e#3775#3776#0" expanded="true" />
+                <element signature="e#3857#3858#0" expanded="true" />
+                <element signature="e#4955#4956#0" expanded="true" />
+                <element signature="e#5030#5031#0" expanded="true" />
+                <element signature="e#5535#5536#0" expanded="true" />
+                <element signature="e#5617#5618#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="jar://$MAVEN_REPOSITORY$/nz/ac/waikato/modeljunit/modeljunit/2.5/modeljunit-2.5.jar!/nz/ac/waikato/modeljunit/Model.class">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="3077">
+              <caret line="254" selection-start-line="254" selection-end-line="254" />
+              <folding>
+                <element signature="e#1967#1968#0" expanded="true" />
+                <element signature="e#2004#2005#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="jar://$MAVEN_REPOSITORY$/nz/ac/waikato/modeljunit/modeljunit/2.5/modeljunit-2.5.jar!/nz/ac/waikato/modeljunit/GreedyTester.class">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="312">
+              <caret line="83" selection-start-line="83" selection-end-line="83" />
+              <folding>
+                <element signature="e#2300#2301#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="jar://$MAVEN_REPOSITORY$/nz/ac/waikato/modeljunit/modeljunit/2.5/modeljunit-2.5.jar!/nz/ac/waikato/modeljunit/GraphListener.class">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="346">
+              <caret line="75" selection-start-line="75" selection-end-line="75" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="jar://$MAVEN_REPOSITORY$/nz/ac/waikato/modeljunit/modeljunit/2.5/modeljunit-2.5.jar!/nz/ac/waikato/modeljunit/RandomTester.class">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="193">
+              <caret line="58" selection-start-line="58" selection-end-line="58" />
+              <folding>
+                <element signature="e#862#863#0" expanded="true" />
+                <element signature="e#907#908#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="jar://$MAVEN_REPOSITORY$/nz/ac/waikato/modeljunit/modeljunit/2.5/modeljunit-2.5.jar!/nz/ac/waikato/modeljunit/Tester.class">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="159">
+              <caret line="90" selection-start-line="90" selection-end-line="90" />
             </state>
           </provider>
         </entry>
@@ -36,8 +103,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/LiftModel/LiftOperator.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="68">
-              <caret line="4" selection-start-line="4" selection-end-line="9" />
+            <state relative-caret-position="534">
+              <caret line="35" column="17" selection-start-line="35" selection-start-column="17" selection-end-line="35" selection-end-column="17" />
             </state>
           </provider>
         </entry>
@@ -45,8 +112,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/test/java/LiftModel/enums/LiftOperatorStates.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="102">
-              <caret line="6" column="32" selection-start-line="6" selection-start-column="32" selection-end-line="6" selection-end-column="32" />
+            <state relative-caret-position="51">
+              <caret line="3" column="26" selection-start-line="3" selection-start-column="26" selection-end-line="3" selection-end-column="26" />
             </state>
           </provider>
         </entry>
@@ -66,10 +133,15 @@
       <find>get</find>
       <find>idle</find>
       <find>Idle</find>
+      <find>buttonPressFromMoveUp</find>
+      <find>LiftMoveUp</find>
+      <find>MoveUp</find>
     </findStrings>
     <replaceStrings>
       <replace>invalid</replace>
       <replace>Invalid</replace>
+      <replace>LiftMove</replace>
+      <replace>Move</replace>
     </replaceStrings>
   </component>
   <component name="Git.Settings">
@@ -96,7 +168,7 @@
       </MavenImportingSettings>
     </option>
   </component>
-  <component name="ProjectFrameBounds">
+  <component name="ProjectFrameBounds" extendedState="6">
     <option name="x" value="-6" />
     <option name="y" value="2" />
     <option name="width" value="1936" />
@@ -111,6 +183,7 @@
     </navigator>
     <panes>
       <pane id="PackagesPane" />
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -178,13 +251,12 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1550417302147" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1550491354054" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/pom.xml" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
@@ -216,6 +288,7 @@
       </extension>
       <option name="PACKAGE_NAME" value="LiftModel" />
       <option name="MAIN_CLASS_NAME" value="LiftModel.LiftOperatorModelTest" />
+      <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -277,43 +350,45 @@
       <workItem from="1549364728936" duration="1209000" />
       <workItem from="1549985697726" duration="5505000" />
       <workItem from="1550402377248" duration="10008000" />
+      <workItem from="1550483898664" duration="4642000" />
+      <workItem from="1550488908952" duration="2257000" />
     </task>
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="PaymentSystemOperatorModelTest - 2019.01.14 at 11h 58m 08s.xml">
-      <configuration name="PaymentSystemOperatorModelTest" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="PaymentSystemOperatorModelTest - 2019.01.14 at 11h 58m 35s.xml">
-      <configuration name="PaymentSystemOperatorModelTest" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="PaymentSystemOperatorModelTest - 2019.01.14 at 12h 13m 26s.xml">
-      <configuration name="PaymentSystemOperatorModelTest" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="PaymentSystemOperatorModelTest - 2019.01.14 at 12h 13m 48s.xml">
-      <configuration name="PaymentSystemOperatorModelTest" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="PaymentSystemOperatorModelTest_TelephoneSystemModelRunner - 2019.02.04 at 20h 01m 42s.xml">
-      <configuration name="PaymentSystemOperatorModelTest.TelephoneSystemModelRunner" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="LiftOperatorModelTest - 2019.02.04 at 20h 04m 20s.xml">
+    <history-entry file="LiftOperatorModelTest - 2019.02.18 at 12h 19m 45s.xml">
       <configuration name="LiftOperatorModelTest" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="LiftOperatorModelTest - 2019.02.12 at 19h 31m 59s.xml">
+    <history-entry file="LiftOperatorModelTest - 2019.02.18 at 12h 22m 34s.xml">
       <configuration name="LiftOperatorModelTest" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="LiftOperatorModelTest - 2019.02.12 at 19h 32m 27s.xml">
+    <history-entry file="LiftOperatorModelTest - 2019.02.18 at 12h 24m 20s.xml">
       <configuration name="LiftOperatorModelTest" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="LiftOperatorModelTest - 2019.02.12 at 19h 33m 12s.xml">
+    <history-entry file="LiftOperatorModelTest - 2019.02.18 at 12h 24m 21s.xml">
       <configuration name="LiftOperatorModelTest" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="LiftOperatorModelTest - 2019.02.12 at 19h 34m 44s.xml">
+    <history-entry file="LiftOperatorModelTest - 2019.02.18 at 12h 25m 06s.xml">
+      <configuration name="LiftOperatorModelTest" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="LiftOperatorModelTest - 2019.02.18 at 12h 25m 12s.xml">
+      <configuration name="LiftOperatorModelTest" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="LiftOperatorModelTest - 2019.02.18 at 12h 28m 44s.xml">
+      <configuration name="LiftOperatorModelTest" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="LiftOperatorModelTest - 2019.02.18 at 12h 45m 29s.xml">
+      <configuration name="LiftOperatorModelTest" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="LiftOperatorModelTest - 2019.02.18 at 13h 02m 21s.xml">
+      <configuration name="LiftOperatorModelTest" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="LiftOperatorModelTest - 2019.02.18 at 13h 02m 37s.xml">
       <configuration name="LiftOperatorModelTest" configurationId="JUnit" />
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="81949000" />
+    <option name="totallyTimeSpent" value="88848000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -325,9 +400,9 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-6" y="2" width="1936" height="1056" extended-state="0" />
+    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.1652452" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.1684435" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -366,10 +441,10 @@
     <breakpoint-manager>
       <breakpoints>
         <line-breakpoint enabled="true" type="java-line">
-          <url>jar://$MAVEN_REPOSITORY$/nz/ac/waikato/modeljunit/modeljunit/2.5/modeljunit-2.5.jar!/nz/ac/waikato/modeljunit/Model.class</url>
-          <line>256</line>
+          <url>file://$PROJECT_DIR$/src/test/java/LiftModel/LiftOperatorModelTest.java</url>
+          <line>145</line>
           <properties />
-          <option name="timeStamp" value="12" />
+          <option name="timeStamp" value="13" />
         </line-breakpoint>
       </breakpoints>
     </breakpoint-manager>
@@ -513,17 +588,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="jar://$MAVEN_REPOSITORY$/nz/ac/waikato/modeljunit/modeljunit/2.5/modeljunit-2.5.jar!/nz/ac/waikato/modeljunit/Tester.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="159">
-          <caret line="90" selection-start-line="90" selection-end-line="90" />
-          <folding>
-            <element signature="e#2478#2479#0" expanded="true" />
-            <element signature="e#2523#2524#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/OfflineVerificationPaymentGatewayModel/OfflineVerificationOperator.java" />
     <entry file="jar://$MAVEN_REPOSITORY$/nz/ac/waikato/modeljunit/modeljunit/2.5/modeljunit-2.5.jar!/nz/ac/waikato/modeljunit/LookaheadTester.class">
       <provider selected="true" editor-type-id="text-editor">
@@ -532,27 +596,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="jar://$MAVEN_REPOSITORY$/nz/ac/waikato/modeljunit/modeljunit/2.5/modeljunit-2.5.jar!/nz/ac/waikato/modeljunit/Model.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="782">
-          <caret line="69" selection-start-line="69" selection-end-line="69" />
-          <folding>
-            <element signature="e#2004#2005#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/pom.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="136">
           <caret line="8" column="35" selection-start-line="8" selection-start-column="35" selection-end-line="8" selection-end-column="35" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$MAVEN_REPOSITORY$/nz/ac/waikato/modeljunit/modeljunit/2.5/modeljunit-2.5.jar!/nz/ac/waikato/modeljunit/GraphListener.class">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2533">
-          <caret line="175" selection-start-line="175" selection-end-line="175" />
         </state>
       </provider>
     </entry>
@@ -596,30 +643,84 @@
     <entry file="file://$PROJECT_DIR$/ModelJUnit.iml">
       <provider selected="true" editor-type-id="text-editor" />
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/java/LiftModel/enums/LiftOperatorStates.java">
+    <entry file="jar://$MAVEN_REPOSITORY$/nz/ac/waikato/modeljunit/modeljunit/2.5/modeljunit-2.5.jar!/nz/ac/waikato/modeljunit/GraphListener.class">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="102">
-          <caret line="6" column="32" selection-start-line="6" selection-start-column="32" selection-end-line="6" selection-end-column="32" />
+        <state relative-caret-position="346">
+          <caret line="75" selection-start-line="75" selection-end-line="75" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/nz/ac/waikato/modeljunit/modeljunit/2.5/modeljunit-2.5.jar!/nz/ac/waikato/modeljunit/RandomTester.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="193">
+          <caret line="58" selection-start-line="58" selection-end-line="58" />
+          <folding>
+            <element signature="e#862#863#0" expanded="true" />
+            <element signature="e#907#908#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/nz/ac/waikato/modeljunit/modeljunit/2.5/modeljunit-2.5.jar!/nz/ac/waikato/modeljunit/GreedyTester.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="312">
+          <caret line="83" selection-start-line="83" selection-end-line="83" />
+          <folding>
+            <element signature="e#2300#2301#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/nz/ac/waikato/modeljunit/modeljunit/2.5/modeljunit-2.5.jar!/nz/ac/waikato/modeljunit/Tester.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="159">
+          <caret line="90" selection-start-line="90" selection-end-line="90" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://$MAVEN_REPOSITORY$/nz/ac/waikato/modeljunit/modeljunit/2.5/modeljunit-2.5.jar!/nz/ac/waikato/modeljunit/Model.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="3077">
+          <caret line="254" selection-start-line="254" selection-end-line="254" />
+          <folding>
+            <element signature="e#1967#1968#0" expanded="true" />
+            <element signature="e#2004#2005#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/LiftModel/LiftOperator.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="68">
-          <caret line="4" selection-start-line="4" selection-end-line="9" />
+        <state relative-caret-position="534">
+          <caret line="35" column="17" selection-start-line="35" selection-start-column="17" selection-end-line="35" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/LiftModel/enums/LiftOperatorStates.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="51">
+          <caret line="3" column="26" selection-start-line="3" selection-start-column="26" selection-end-line="3" selection-end-column="26" />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/test/java/LiftModel/LiftOperatorModelTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="722">
-          <caret line="189" column="20" selection-start-line="189" selection-start-column="20" selection-end-line="189" selection-end-column="20" />
+        <state relative-caret-position="440">
+          <caret line="172" column="47" selection-start-line="172" selection-start-column="47" selection-end-line="172" selection-end-column="47" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#5315#5316#0" expanded="true" />
-            <element signature="e#5390#5391#0" expanded="true" />
-            <element signature="e#6354#6355#0" expanded="true" />
-            <element signature="e#6429#6430#0" expanded="true" />
+            <element signature="e#858#859#0" expanded="true" />
+            <element signature="e#891#892#0" expanded="true" />
+            <element signature="e#2812#2813#0" expanded="true" />
+            <element signature="e#2887#2888#0" expanded="true" />
+            <element signature="e#3250#3251#0" expanded="true" />
+            <element signature="e#3325#3326#0" expanded="true" />
+            <element signature="e#3775#3776#0" expanded="true" />
+            <element signature="e#3857#3858#0" expanded="true" />
+            <element signature="e#4955#4956#0" expanded="true" />
+            <element signature="e#5030#5031#0" expanded="true" />
+            <element signature="e#5535#5536#0" expanded="true" />
+            <element signature="e#5617#5618#0" expanded="true" />
           </folding>
         </state>
       </provider>

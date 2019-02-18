@@ -3,60 +3,50 @@ package LiftModel;
 public class LiftOperator {
 
     private  boolean DoorOpen = false;
-    private  boolean LiftMoveUp = false;
-    private  boolean LiftMoveDown = false;
+    private  boolean LiftMove = false;
     private  boolean LiftBetweenFloors = false;
     private boolean ButtonPress = false;
 
 
     boolean isDoorOpen() {return  DoorOpen;}
-    boolean isLiftMovingUp() {return  LiftMoveUp;}
-    boolean isLiftMovingDown() {return  LiftMoveDown;}
-    boolean isLiftBetweenFloors(){ return  LiftBetweenFloors;}
+    boolean isLiftMovingUp() {return  LiftMove;}
     boolean isButtonPressed(){return ButtonPress;}
 
 
     void openLiftDoors(){
         if( !LiftBetweenFloors){
-            if(!LiftMoveUp &&!LiftMoveDown && ButtonPress ){
+            if(!LiftMove && ButtonPress ){
                 DoorOpen = true;
                 ButtonPress = false;
-            } else if(  (LiftMoveUp || LiftMoveDown) && !DoorOpen && !ButtonPress) {
-                LiftMoveUp = false;
-                LiftMoveDown = false;
+            } else if(  LiftMove && !DoorOpen ) {
+                LiftMove = false;
                 DoorOpen = true;
-
+                ButtonPress = false;
             }
         }
     }
 
     void closeLiftDoor(){
-        if(!LiftMoveUp &&!LiftMoveDown&& DoorOpen && !LiftBetweenFloors ){
+        if(!LiftMove && DoorOpen && !LiftBetweenFloors ){
             DoorOpen = false;
+
         }
     }
 
-    void liftMoveUp(){
-        if(ButtonPress  && !LiftMoveUp && !LiftMoveDown && !DoorOpen) {
+    void liftMove(){
+        if(ButtonPress && !DoorOpen) {
             ButtonPress=false;
-            LiftMoveUp = true;
-        }
-    }
-
-    void liftMoveDown(){
-        if(ButtonPress  && !LiftMoveUp && !LiftMoveDown && !DoorOpen) {
-            ButtonPress=false;
-            LiftMoveDown = true;
+            LiftMove = true;
         }
     }
 
     void buttonPressed(){
-        if(!ButtonPress && !LiftMoveDown && !LiftMoveUp){
+        if( !LiftMove){
             ButtonPress = true;
-        } else if(ButtonPress && !DoorOpen && (LiftMoveUp || LiftMoveDown) ){
-            ButtonPress = false;
-        } else if(ButtonPress && !LiftMoveDown && !LiftMoveUp  && DoorOpen){
-            DoorOpen = false;
+            if(DoorOpen)
+                DoorOpen = false;
+        } else if(!ButtonPress && !DoorOpen && (LiftMove) ){
+            ButtonPress = true;
         }
     }
 
