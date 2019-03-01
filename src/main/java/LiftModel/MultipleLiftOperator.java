@@ -1,73 +1,22 @@
 package LiftModel;
 
 import com.liftmania.Lift;
-import com.liftmania.LiftController;
 
 import java.util.ArrayList;
 
-public class LiftOperator {
+public class MultipleLiftOperator {
 
- /*   private  boolean DoorOpen = false;
-    private  boolean LiftMove = false;
-    private  boolean LiftBetweenFloors = false;
-    private boolean ButtonPress = false;
+    int numFloors = 0;
 
-
-    boolean isDoorOpen() {return  DoorOpen;}
-    boolean isLiftMovingUp() {return  LiftMove;}
-    boolean isButtonPressed(){return ButtonPress;}
-
-
-    void openLiftDoors(){
-        if( !LiftBetweenFloors){
-            if(!LiftMove && ButtonPress ){
-                DoorOpen = true;
-                ButtonPress = false;
-            } else if(  LiftMove && !DoorOpen ) {
-                LiftMove = false;
-                DoorOpen = true;
-                ButtonPress = false;
-            }
-        }
+    public MultipleLiftOperator(int floorCount){
+        numFloors = floorCount;
     }
-
-    void closeLiftDoor(){
-        if(!LiftMove && DoorOpen && !LiftBetweenFloors ){
-            DoorOpen = false;
-
-        }
-    }
-
-    void liftMove(){
-        if(ButtonPress && !DoorOpen) {
-            ButtonPress=false;
-            LiftMove = true;
-        }
-    }
-
-    void buttonPressed(){
-        if( !LiftMove){
-            ButtonPress = true;
-            if(DoorOpen)
-                DoorOpen = false;
-        } else if(!ButtonPress && !DoorOpen && (LiftMove) ){
-            ButtonPress = true;
-        }
-    }*/
-
-     int numFloors = 0;
-
-     public LiftOperator(int floorCount){
-         numFloors = floorCount;
-     }
 
     public void closeLiftDoor(Lift lift) {
-        setMoving(lift,false);
         lift.closeDoors();
     }
 
     public void openLiftDoor(Lift lift) {
-        setMoving(lift,false);
         lift.openDoors();
     }
 
@@ -79,29 +28,45 @@ public class LiftOperator {
         lift.setMoving(move);
     }
 
-     public void moveLift(Lift lift, int toFloor){
+    public void moveLift(Lift lift, int toFloor){
 
-         setFloor(lift,toFloor);
-         setMoving(lift,true);
+        boolean direction = true;
+        if(lift.getFloor()>toFloor){
+            direction = false;
+        }
 
-     }
+        lift.setMoveDirection(direction);
 
-     public Lift buttonPress(Lift [] lifts, int floor){
+        setFloor(lift,toFloor);
+        setMoving(lift,true);
 
-         ArrayList<Lift> closestLifts = getClosestLifts(lifts,floor);
+        lift.setMoving(true);
+        lift.setFloor(toFloor);
 
-         if (closestLifts.size() == 0) {
-                 throw new RuntimeException("Could not find an available lift.");
-         }
+        //Open and close doorts
+        lift.openDoors();
+        try {
+            Thread.sleep(2000);
+        } catch (Exception e) {}
+        lift.closeDoors();
 
-         //Pick random lift
-         Lift lift = closestLifts.get((int)(Math.random() * (closestLifts.size())));
+        //Update lift state
+        lift.setMoving(false);
 
+    }
+    //checks if inputted list has a lift.
+    //for the scenario where multiple are present - one is randomly chosen
+    public Lift getClosestLift(ArrayList<Lift> closestLifts){
+        if (closestLifts.size() == 0) {
+            throw new RuntimeException("Could not find an available lift.");
+        }
 
+        //Pick random lift
+        Lift lift = closestLifts.get((int)(Math.random() * (closestLifts.size())));
+        //   moveLift(lift, floor);
 
-         return lift;
-     }
-
+        return lift;
+    }
 
     public ArrayList<Lift> getClosestLifts(Lift [] lifts, int floor){
         ArrayList<Lift> closestLifts = getClosestStationaryLifts(lifts, floor);
@@ -126,13 +91,11 @@ public class LiftOperator {
                     } else if (lift.distanceFromFloor(floor) == -distance && lift.getIsMovingUp()) {
                         result.add(lift);
                     }
-
                 }
             }
         }
 
         return result;
-
     }
 
     public ArrayList<Lift> getClosestStationaryLifts(Lift [] lifts,int floor) {
@@ -151,7 +114,4 @@ public class LiftOperator {
 
         return result;
     }
-
-
-
 }

@@ -1,0 +1,151 @@
+IMPORTS{
+	
+import com.liftmania.Lift;
+import com.liftmania.LiftController;
+import com.liftmania.gui.Shaft;
+import com.liftmania.gui.LiftsVisualiser;
+import java.util.ArrayList;
+import java.util.List;
+}
+
+
+GLOBAL {
+		VARIABLES {		
+
+		int maxFloor = 6;
+		int minFloor = 0;
+	%%	ArrayList<ArrayList<Integer>> liftRequests = new ArrayList<ArrayList<Integer>>(3);
+		
+		List<Integer> serviceList = new ArrayList<Integer>();
+		List<Integer> openDoorCount = new ArrayList<Integer>();
+		List<Integer> closeDoorCount = new ArrayList<Integer>();
+		int tempVal = 0;
+		boolean service = false;
+		boolean missedOpen = false;
+		boolean firstIter = true;
+	%%	boolean validOpen = true;
+	%%	boolean validClose = true;
+	%%	boolean callLift = false;
+		
+	}
+		
+	EVENTS{
+		callLiftToFloor(int floor) = {*.callLiftToFloor(floor)}
+  		moveLift(Lift liftNumber, int floorNumber) = {*.moveLift(liftNumber,floorNumber)}
+  		openLiftDoor(int DestLift) = {*.openLiftDoor(DestLift)}
+		closeLiftDoor(int Lift) = {*.closeLiftDoor(Lift)}
+		
+ 		%%test
+	}
+	
+	PROPERTY LiftControllerProperties{
+		STATES{
+			BAD{
+				error
+				
+			}
+			NORMAL{
+
+			}
+			STARTING{
+				valid
+			}
+		}
+		
+		TRANSITIONS{	
+			
+			valid -> valid[callLiftToFloor\ serviceList.isEmpty() || !(serviceList.contains(floor)) \firstIter = false;System.out.println("Button Call. floor:"+ floor );serviceList.add(floor);]
+			valid -> error[moveLift \missedOpen\System.out.println("Missed floor error" );]
+			valid -> valid[moveLift \!missedOpen && !firstIter\ System.out.println("current floor:"+ floor );
+				if(!serviceList.isEmpty()){
+					for(int i =0;i<serviceList.size();i++){
+						if(floorNumber==serviceList.get(i)){
+							missedOpen = true;
+						}		
+					}
+				} 	
+			]
+			
+		}
+	}
+
+
+	FOREACH (Lift lift)
+    {
+		VARIABLES {
+			int id;
+			int floor;
+			boolean liftIsMoving= false;	
+			boolean doorIsOpen = false;
+			int openLiftCount = 0;
+
+			Clock closeDoorClock = new Clock();		
+			Clock moveLiftClock = new Clock();	
+		}
+		
+		EVENTS{
+			setMoving(boolean moveLift) = 	{Lift l.setMoving(moveLift)}	where{lift = l;}
+			closeDoors() 				= 	{Lift l.closeDoors()}			where{lift = l;}
+			openDoors() 				= 	{Lift l.openDoors()}			where{lift = l;}
+		}
+		
+		PROPERTY LiftProperties{
+			STATES{
+				BAD{
+					
+					errorState
+				}
+				NORMAL{
+					doorOpen { floor = lift.getFloor();System.out.println("open door floor: "+floor);}
+					idle { id = lift.getId();System.out.println("Lift Id: "+id);}
+					moveLift{ floor = lift.getFloor();System.out.println("move floor: "+floor);}
+					doorClosed { floor = lift.getFloor();System.out.println("close floor: "+floor);}
+				}
+				STARTING{
+					idle {id = lift.getId(); floor = lift.getFloor();System.out.println("floor: "+floor + " id:" +id + "liftIsMoving " + liftIsMoving + " doorIsOpen"+doorIsOpen); }
+
+				}
+			}
+			
+			TRANSITIONS{
+				
+				idle -> moveLift[setMoving(liftIsMoving)\!doorIsOpen && !liftIsMoving  \liftIsMoving=true;System.out.println("Lift is moving");]
+				idle -> doorOpen[openDoors\!doorIsOpen && !liftIsMoving && openLiftCount%2 ==0  \ openLiftCount++; doorIsOpen=true;closeDoorClock.reset() ;System.out.println("Door is open");]
+				moveLift -> doorOpen[openDoors\!doorIsOpen && liftIsMoving && openLiftCount%2 ==0 \
+					openLiftCount++; doorIsOpen = true;liftIsMoving=false;closeDoorClock.reset();System.out.println("Destination reached from moving +"+floor );
+					if(!serviceList.isEmpty())
+					serviceList.remove(Integer.valueOf(floor));
+					else if(!firstIter)
+					missedOpen = true;
+					
+				]		
+				moveLift -> moveLift[setMoving(liftIsMoving)\!doorIsOpen && liftIsMoving \System.out.println("Lift moving to next floor : " + liftIsMoving );]
+				doorOpen ->doorClosed[closeDoors\doorIsOpen && !liftIsMoving && closeDoorClock.compareTo(3)>=0 && openLiftCount%2 ==1 \openLiftCount--;moveLiftClock.reset();doorIsOpen=false;System.out.println("Door is closed due to timer");]
+				doorClosed -> idle[setMoving()\ \System.out.println("Door is closed and idle");]
+				
+				
+					
+		%%		doorClosed -> doorOpen[openDoors\!doorIsOpen && !liftIsMoving \closeDoorClock.reset();doorIsOpen=true;System.out.println("Door is stationary and open ");]
+		%%		doorOpen ->doorClosed[closeDoors\doorIsOpen && !liftIsMoving  && closeDoorClock.compareTo(3)<0 \moveLiftClock.reset();doorIsOpen=false;System.out.println("Door is stationary and closed");]
+		%%		doorOpen ->doorOpen[openDoors\ doorIsOpen && !liftIsMoving && closeDoorClock.compareTo(3)<0\closeDoorClock.reset();System.out.println("Door remains open due to button press");]		
+
+	%%			doorClosed -> moveLift[setMoving(liftIsMoving)\!doorIsOpen && !liftIsMoving && (moveLiftClock.compareTo(3) < 0)\liftIsMoving=true;System.out.println("Door is moving asssss4" );]
+				
+				
+		%%		doorOpen ->errorState[closeDoors\ doorIsOpen && !liftIsMoving && closeDoorClock.compareTo(3)<0\;System.out.println("Door closed too early");]			
+				doorOpen -> errorState[setMoving(liftIsMoving)\\System.out.println("Move call received when door is open" );]
+				doorOpen -> errorState[openDoors()\\System.out.println("Mutliple open door actions registered error" );]
+				doorClosed -> errorState[closeDoors()\moveLiftClock.compareTo(3) > 0\System.out.println("Lift moved after more than 3 seconds error" );]
+		%%		doorClosed -> errorState[setMoving(moving)\\System.out.println("Multiple close door actions registered error" );]			
+				doorClosed -> errorState[closeDoors()\\System.out.println("Close doors called after move error" );]
+				doorOpen -> errorState[openDoors()\floor<minFloor || floor>maxFloor\System.out.println("Lift moved beyond specified limit");]
+				moveLift ->errorState[setMoving()\serviceList.isEmpty()\System.out.println("Lift is moving when no service is present");]
+				doorOpen -> errorState[closeDoors()\openLiftCount%2 ==0\System.out.println("open and close door not alternating - open"); ]
+				doorClosed -> errorState[closeDoors()\openLiftCount%2 ==1\System.out.println("open and close door not alternating - close"); ]
+			}
+		
+		}
+				
+	}
+}
+	
