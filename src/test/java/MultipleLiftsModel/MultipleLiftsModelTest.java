@@ -27,11 +27,10 @@ public class MultipleLiftsModelTest implements FsmModel {
     MultipleLiftOperator multipleLiftOperator = new MultipleLiftOperator(numFloors);
     ArrayList<ServiceList> serviceList = new ArrayList<ServiceList>();
     //Variables
-    private MultipleLiftOperatorStates modelState = MultipleLiftOperatorStates.IDLE;
-    private boolean DoorOpen = false;
-    private boolean LiftMove = false;
-    private boolean ButtonPress = false;
+    private MultipleLiftOperatorStates modelState = MultipleLiftOperatorStates.CLOSED;
+
     private Random random = new Random();
+    ArrayList<Integer> validLifts = new ArrayList<Integer>();;
 
 
     //SUT
@@ -43,10 +42,7 @@ public class MultipleLiftsModelTest implements FsmModel {
     }
 
     public void reset(final boolean reset) {
-        modelState = MultipleLiftOperatorStates.IDLE;
-        DoorOpen = false;
-        LiftMove = false;
-        ButtonPress = false;
+        modelState = MultipleLiftOperatorStates.CLOSED;
 
         if (reset) {
 
@@ -54,20 +50,22 @@ public class MultipleLiftsModelTest implements FsmModel {
             multipleLiftOperator = new MultipleLiftOperator(numFloors);
             lifts = sut.getLifts();
             serviceList = new ArrayList<ServiceList>();
+
         }
       /*  try {
             Thread.sleep(3000*numFloors +250+ 50*numFloors);
         } catch (Exception e) {}*/
     }
 
-    public boolean getClosestLiftGuard() {
-        return getState().equals(MultipleLiftOperatorStates.IDLE) || getState().equals(MultipleLiftOperatorStates.SERVICING) || getState().equals(MultipleLiftOperatorStates.FINALISING);
+    public boolean getButtonPressGuard() {
+        return getState().equals(MultipleLiftOperatorStates.CLOSED) || getState().equals(MultipleLiftOperatorStates.MOVE) ;
     }
 
     //idle to servicing states through callLiftToFloor
     public @Action
-    void getClosestLift() {
-        modelState = MultipleLiftOperatorStates.SERVICING;
+    void getButtonPress() {
+        int check = 0;
+        modelState = MultipleLiftOperatorStates.LIFT_CALL;
 
         int randomFloorCall = random.nextInt(numFloors);
 
@@ -78,34 +76,96 @@ public class MultipleLiftsModelTest implements FsmModel {
 
         if(listOfLifts.size()<=1)
             Assert.assertEquals("Lift in SUT matches lift used", sut.getLifts()[lift.getId()], lift);
-        else
-            Assert.assertEquals("Lift in SUT matches lift used",sutListOfLifts, listOfLifts);
+        else{
+            for(int i = 0; i<listOfLifts.size();i++){
+                if(sutListOfLifts.get(i).getId()== listOfLifts.get(i).getId()){
+                    check++;
+                }
+            }
+            Assert.assertEquals("Lift in SUT matches lift used: " + check +"list of Lifts size: " +listOfLifts.size() + " sut lift size:" +sutListOfLifts.size()  ,check, listOfLifts.size());
+        }
+
 
         lift = multipleLiftOperator.getClosestLift(listOfLifts);
 
         createNewRequest(lift, randomFloorCall);
     }
 
+    public boolean getButtonPress_OpenDoorGuard() {
+        return getState().equals(MultipleLiftOperatorStates.OPEN);
+
+    }
+
+    public @Action
+    void getButtonPress_OpenDoor() {
+
+        modelState = MultipleLiftOperatorStates.CLOSED;
+
+        int check = 0;
+        modelState = MultipleLiftOperatorStates.LIFT_CALL;
+
+        int randomFloorCall = random.nextInt(numFloors);
+
+        ArrayList<Lift> sutListOfLifts = sut.getClosestLifts(randomFloorCall);
+
+        listOfLifts = multipleLiftOperator.getClosestLifts(lifts, randomFloorCall);
+
+
+        if(listOfLifts.size()<=1)
+            Assert.assertEquals("Lift in SUT matches lift used", sut.getLifts()[lift.getId()], lift);
+        else{
+            for(int i = 0; i<listOfLifts.size();i++){
+                if(sutListOfLifts.get(i).getId()== listOfLifts.get(i).getId()){
+                    check++;
+                }
+            }
+            Assert.assertEquals("Lift in SUT matches lift used",check, listOfLifts.size());
+        }
+
+        lift = multipleLiftOperator.getClosestLift(listOfLifts);
+        createNewRequest(lift, randomFloorCall);
+
+        int randomLift =lift.getId();
+        sut.closeLiftDoor(randomLift,lift.getFloor());
+
+        multipleLiftOperator.closeLiftDoor(lifts[randomLift]);
+
+        try {
+            Thread.sleep(3000);
+        } catch (Exception e) {}
+
+        Assert.assertEquals("Lift in SUT matches lift used", sut.getLifts()[randomLift].getId(), lifts[randomLift].getId());
+        Assert.assertEquals("Lift in SUT matches lift used", sut.getLifts()[randomLift].isOpen(), lifts[randomLift].isOpen());
+        Assert.assertEquals("Lift in SUT matches lift used", sut.getLifts()[randomLift].isMoving(), lifts[randomLift].isMoving());
+        Assert.assertEquals("Lift in SUT matches lift used", false, lifts[randomLift].isOpen());
+        Assert.assertEquals("Lift in SUT matches lift used",false, lifts[randomLift].isMoving());
+
+    }
 
     public boolean getCloseDoorGuard() {
-        return getState().equals(MultipleLiftOperatorStates.FINALISING);
+        return getState().equals(MultipleLiftOperatorStates.OPEN);
 
     }
 
     public @Action
     void getCloseDoor() {
 
-        if (serviceList.size() > 0) {
+  /*      if (serviceList.size() > 0) {
             modelState = MultipleLiftOperatorStates.SERVICING;
         } else {
             modelState = MultipleLiftOperatorStates.IDLE;
-        }
+        }*/
+
+        modelState = MultipleLiftOperatorStates.CLOSED;
 
         int randomLift = random.nextInt(numLifts);
-        sut.closeLiftDoor(randomLift);
+        sut.closeLiftDoor(randomLift,lift.getFloor());
 
         multipleLiftOperator.closeLiftDoor(lifts[randomLift]);
 
+        try {
+            Thread.sleep(3000);
+        } catch (Exception e) {}
 
         Assert.assertEquals("Lift in SUT matches lift used", sut.getLifts()[randomLift].getId(), lifts[randomLift].getId());
         Assert.assertEquals("Lift in SUT matches lift used", sut.getLifts()[randomLift].isOpen(), lifts[randomLift].isOpen());
@@ -115,20 +175,24 @@ public class MultipleLiftsModelTest implements FsmModel {
     }
 
     public boolean getOpenDoorGuard() {
-        return getState().equals(MultipleLiftOperatorStates.SERVICING);
+        return getState().equals(MultipleLiftOperatorStates.CLOSED)  || getState().equals(MultipleLiftOperatorStates.MOVE);
 
     }
 
     public @Action
     void getOpenDoor() {
-        modelState = MultipleLiftOperatorStates.FINALISING;
+        modelState = MultipleLiftOperatorStates.OPEN;
 
         int randomLift = random.nextInt(numLifts);
         deleteRequest(lifts[randomLift]);
 
-        sut.openLiftDoor(randomLift);
+        sut.openLiftDoor(randomLift,lift.getFloor());
 
         multipleLiftOperator.openLiftDoor(lifts[randomLift]);
+
+        try {
+            Thread.sleep(3000);
+        } catch (Exception e) {}
 
         Assert.assertEquals("Lift in SUT matches lift used", sut.getLifts()[randomLift].getId(), lifts[randomLift].getId());
         Assert.assertEquals("Lift in SUT matches lift used", sut.getLifts()[randomLift].isOpen(), lifts[randomLift].isOpen());
@@ -139,31 +203,50 @@ public class MultipleLiftsModelTest implements FsmModel {
 
 
     public boolean getMoveLiftGuard() {
-        return (getState().equals(MultipleLiftOperatorStates.SERVICING) ||getState().equals(MultipleLiftOperatorStates.FINALISING)) && serviceList.size()>0;
+        return (getState().equals(MultipleLiftOperatorStates.LIFT_CALL)) && serviceList.size()>0;
 
     }
 
     public @Action
     void  getMoveLift() {
 
-        modelState = MultipleLiftOperatorStates.SERVICING;
+        modelState = MultipleLiftOperatorStates.MOVE;
+     //   lifts = sut.getLifts();
+        for(int i=0;i<numLifts;i++){
+            if(!lifts[i].isOpen()){
 
-        int randomLift = random.nextInt(numLifts);
+                validLifts.add(lifts[i].getId());
+            }
+        }
 
+        int randomID = random.nextInt(validLifts.size());
 
+        int randomLift =validLifts.get(randomID);
+        int randomFloor = random.nextInt(numFloors);
 
+        validLifts.clear();
+        sut.moveLift(randomLift,randomFloor);
+
+        multipleLiftOperator.moveLift(lifts[randomLift],randomFloor);
+
+        try {
+            Thread.sleep(250+ 50*numFloors);
+        } catch (Exception e) {}
+/*
         for(int i =0; i<serviceList.size();i++){
             if(serviceList.get(i).getLift().getId() == randomLift){
 
 
             }
-        }
+        }*/
+
+     //   sut.m
 
         Assert.assertEquals("Lift in SUT matches lift used", sut.getLifts()[randomLift].getId(), lifts[randomLift].getId());
         Assert.assertEquals("Lift in SUT matches lift used", sut.getLifts()[randomLift].isOpen(), lifts[randomLift].isOpen());
         Assert.assertEquals("Lift in SUT matches lift used", sut.getLifts()[randomLift].isMoving(), lifts[randomLift].isMoving());
-        Assert.assertEquals("Lift in SUT matches lift used", true, lifts[randomLift].isOpen());
-        Assert.assertEquals("Lift in SUT matches lift used",false, lifts[randomLift].isMoving());
+        Assert.assertEquals("Lift in SUT matches lift used", false, lifts[randomLift].isOpen());
+        Assert.assertEquals("Lift in SUT matches lift used",true, lifts[randomLift].isMoving());
     }
 
 
@@ -228,7 +311,7 @@ public class MultipleLiftsModelTest implements FsmModel {
         tester.addCoverageMetric(new StateCoverage());
         tester.addCoverageMetric(new ActionCoverage());
 
-        tester.generate(5);
+        tester.generate(500);
         tester.printCoverage();
     }
 }

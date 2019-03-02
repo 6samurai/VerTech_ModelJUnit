@@ -6,18 +6,18 @@ public class Lift {
 	boolean moving=false;
 	int floor = 0;
 	boolean doorsOpen = false;
-	boolean moveUp = false;
+	boolean moveUp =true;//false implies that lift is moving downward
 
 	public int getId() {
 		return id;
 	}
-	//false implies that lift is moving downward
+
 	public boolean getIsMovingUp() {
 		return moveUp;
 	}
 
-	public void setMoveDirection(boolean moveUp) {
-		this.moving = moveUp;
+	public void setIsMovingUp(boolean moveUp) {
+		this.moveUp = moveUp;
 	}
 
 	public boolean isMoving() {

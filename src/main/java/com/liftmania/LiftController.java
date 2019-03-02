@@ -51,15 +51,18 @@ public class LiftController {
 	}
 
 	public void moveLift(Lift lift, int floorNumber) {
-		boolean direction = true;
-		if(lift.getFloor()>floorNumber){
-			direction = false;
-		}
-		lifts[lift.id].setMoveDirection(direction);
+		boolean moveUp = true;
 
+		if(lifts[lift.id].floor > floorNumber){
+			moveUp = false;
+		}
+
+		lifts[lift.id].setIsMovingUp(moveUp);
 		//The animation process is trusted with updating the state of the lift (floorNumber, moving, etc)
 		visualiser.animateLiftMovement(lift, floorNumber);
 	}
+
+
 
 
 	/**
@@ -68,10 +71,10 @@ public class LiftController {
 	 * @param liftNumber
 	 *            - The lift number (0-based)
 	 */
-	public void closeLiftDoor(int liftNumber) {
+	public void closeLiftDoor(int liftNumber, int floor) {
 		Lift lift = lifts[liftNumber];
 		lift.closeDoors();
-
+		visualiser.animateLiftClose(lift, floor);
 /*		visualiser.addAnimationCommand(new AnimationCommand(
 				AnimationCommand.Command.close, liftNumber, lift.getFloor(), -1));
 	*/
@@ -83,9 +86,10 @@ public class LiftController {
 	 * @param liftNumber
 	 *            - The lift number (0-based)
 	 */
-	public void openLiftDoor(int liftNumber) {
+	public void openLiftDoor(int liftNumber, int floor) {
 		Lift lift = lifts[liftNumber];
 		lift.openDoors();
+		visualiser.animateLiftOpen(lift, floor);
 		/*visualiser.addAnimationCommand(new AnimationCommand(
 				AnimationCommand.Command.open, liftNumber, lift.getFloor(), -1));*/
 	}
@@ -100,27 +104,22 @@ public class LiftController {
 		//Find lifts closest to the required floor
 		ArrayList<Lift> closestLifts = getClosestLifts(floor);
 
+
 		if (closestLifts.size() == 0) {
-			throw new RuntimeException("Could not find an available lift.");
+			throw new RuntimeException("Could not find an available lift. input floor"+  floor+" " + lifts[0].floor +" " + lifts[0].doorsOpen +" " +  lifts[0].moveUp + " " + lifts[0].moving);
 		}
 
 		//Pick random lift
 		Lift lift = closestLifts.get((int)(Math.random() * (closestLifts.size())));
 
 		moveLift(lift, floor);
-
+		openLiftDoor(lift.id,floor);
+		closeLiftDoor(lift.id,floor);
 	}
 
-	public ArrayList<Lift> getClosestLifts(int floor){
-		ArrayList<Lift> closestLifts = getClosestStationaryLifts(floor);
-		if(closestLifts.size()>0)
-			return closestLifts;
-		else{
-			return (getClosestMovingLifts(floor));
-		}
-	}
 
-	public ArrayList<Lift> getClosestMovingLifts(int floor){
+
+	public ArrayList<Lift>getClosestLifts(int floor){
 		ArrayList<Lift> result = new ArrayList<Lift>();
 
 		int distance = -1;
@@ -133,6 +132,10 @@ public class LiftController {
 							(lift.distanceFromFloor(floor) == -distance && lift.getIsMovingUp())) {
 						result.add(lift);
 					}
+				} else{
+					if (Math.abs(lift.distanceFromFloor(floor)) == distance ) {
+						result.add(lift);
+					}
 				}
 			}
 		}
@@ -141,26 +144,12 @@ public class LiftController {
 
 	}
 
-	public ArrayList<Lift> getClosestStationaryLifts(int floor) {
 
-		ArrayList<Lift> result = new ArrayList<Lift>();
-
-		int distance = -1;
-		while (result.size() == 0 && distance<numFloors) {
-			distance++;
-			for (Lift lift : lifts) {
-				if (Math.abs(lift.distanceFromFloor(floor)) == distance && !lift.isMoving()) {
-					result.add(lift);
-				}
-			}
-		}
-
-		return result;
-	}
 
 	public static void main(String[] args) throws Exception {
+		new LiftController(6, 3, false);
 		//	new LiftController(6, 3, true);
-		new LiftController(6, 1, true);
+		//	new LiftController(6, 1, false);
 	}
 
 }

@@ -83,6 +83,20 @@ public class LiftsVisualiser extends JFrame implements ActionListener {
 				AnimationCommand.Command.move, floorNumber));
 	}
 
+	public void animateLiftOpen(Lift lift, int floorNumber) {
+
+		//Delegate animation to the shaft responsible so processing can move on
+		shafts[lift.getId()].addAnimationCommand(new AnimationCommand(
+				AnimationCommand.Command.open, floorNumber));
+	}
+
+	public void animateLiftClose(Lift lift, int floorNumber) {
+
+		//Delegate animation to the shaft responsible so processing can move on
+		shafts[lift.getId()].addAnimationCommand(new AnimationCommand(
+				AnimationCommand.Command.close, floorNumber));
+	}
+
 	@Override
 	public void actionPerformed(ActionEvent e) {
 		StringTokenizer tokenizer = new StringTokenizer(e.getActionCommand(),
@@ -94,10 +108,12 @@ public class LiftsVisualiser extends JFrame implements ActionListener {
 			controller.moveLift(liftNumber, floor);
 		} else if (cmd.equalsIgnoreCase("open")) {
 			int liftNumber = Integer.parseInt(tokenizer.nextToken());
-			controller.openLiftDoor(liftNumber);
+			int floor = Integer.parseInt(tokenizer.nextToken());
+			controller.openLiftDoor(liftNumber,floor);
 		} else if (cmd.equalsIgnoreCase("close")) {
 			int liftNumber = Integer.parseInt(tokenizer.nextToken());
-			controller.closeLiftDoor(liftNumber);
+			int floor = Integer.parseInt(tokenizer.nextToken());
+			controller.closeLiftDoor(liftNumber,floor);
 		} else if (cmd.equalsIgnoreCase("call")) {
 			int floorNumber = Integer.parseInt(tokenizer.nextToken());
 			controller.callLiftToFloor(floorNumber);

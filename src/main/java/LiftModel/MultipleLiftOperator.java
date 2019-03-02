@@ -13,10 +13,12 @@ public class MultipleLiftOperator {
     }
 
     public void closeLiftDoor(Lift lift) {
+        lift.setMoving(false);
         lift.closeDoors();
     }
 
     public void openLiftDoor(Lift lift) {
+        lift.setMoving(false);
         lift.openDoors();
     }
 
@@ -31,30 +33,17 @@ public class MultipleLiftOperator {
     public void moveLift(Lift lift, int toFloor){
 
         boolean direction = true;
+       lift.closeDoors();
         if(lift.getFloor()>toFloor){
             direction = false;
         }
-
-        lift.setMoveDirection(direction);
+        lift.setIsMovingUp(direction);
 
         setFloor(lift,toFloor);
         setMoving(lift,true);
 
-        lift.setMoving(true);
-        lift.setFloor(toFloor);
-
-        //Open and close doorts
-        lift.openDoors();
-        try {
-            Thread.sleep(2000);
-        } catch (Exception e) {}
-        lift.closeDoors();
-
-        //Update lift state
-        lift.setMoving(false);
-
     }
-    //checks if inputted list has a lift.
+   //checks if inputted list has a lift.
     //for the scenario where multiple are present - one is randomly chosen
     public Lift getClosestLift(ArrayList<Lift> closestLifts){
         if (closestLifts.size() == 0) {
@@ -68,7 +57,7 @@ public class MultipleLiftOperator {
         return lift;
     }
 
-    public ArrayList<Lift> getClosestLifts(Lift [] lifts, int floor){
+ /*   public ArrayList<Lift> getClosestLifts(Lift [] lifts, int floor){
         ArrayList<Lift> closestLifts = getClosestStationaryLifts(lifts, floor);
         if(closestLifts.size()>0)
             return closestLifts;
@@ -113,5 +102,31 @@ public class MultipleLiftOperator {
         }
 
         return result;
+    }*/
+
+    public ArrayList<Lift>getClosestLifts(Lift [] lifts,int floor){
+        ArrayList<Lift> result = new ArrayList<Lift>();
+
+        int distance = -1;
+        while (result.size() == 0 && distance<numFloors) {
+            distance++;
+
+            for (Lift lift : lifts) {
+                if(lift.isMoving()){
+                    if ( (lift.distanceFromFloor(floor) == distance && !lift.getIsMovingUp() ) ||
+                            (lift.distanceFromFloor(floor) == -distance && lift.getIsMovingUp())) {
+                        result.add(lift);
+                    }
+                } else{
+                    if (Math.abs(lift.distanceFromFloor(floor)) == distance ) {
+                        result.add(lift);
+                    }
+                }
+            }
+        }
+
+        return result;
+
     }
+
 }

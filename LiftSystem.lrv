@@ -21,8 +21,10 @@ GLOBAL {
 		List<Integer> closeDoorCount = new ArrayList<Integer>();
 		int tempVal = 0;
 		boolean service = false;
-		boolean missedOpen = false;
+		boolean missedOpenUp = false;
 		boolean firstIter = true;
+		boolean missedOpenDown = false;
+		boolean missedOpen = false;
 	%%	boolean validOpen = true;
 	%%	boolean validClose = true;
 	%%	boolean callLift = false;
@@ -34,7 +36,8 @@ GLOBAL {
   		moveLift(Lift liftNumber, int floorNumber) = {*.moveLift(liftNumber,floorNumber)}
   		openLiftDoor(int DestLift) = {*.openLiftDoor(DestLift)}
 		closeLiftDoor(int Lift) = {*.closeLiftDoor(Lift)}
-		
+		animateUp(int currentFloorUp) =  {*.animateUp(currentFloorUp)}
+		animateDown(int currentFloorDown) =  {*.animateDown(currentFloorDown)}
  		%%test
 	}
 	
@@ -54,17 +57,29 @@ GLOBAL {
 		
 		TRANSITIONS{	
 			
-			valid -> valid[callLiftToFloor\ serviceList.isEmpty() || !(serviceList.contains(floor)) \firstIter = false;System.out.println("Button Call. floor:"+ floor );serviceList.add(floor);]
-			valid -> error[moveLift \missedOpen\System.out.println("Missed floor error" );]
-			valid -> valid[moveLift \!missedOpen && !firstIter\ System.out.println("current floor:"+ floor );
+			valid -> valid[callLiftToFloor\ serviceList.isEmpty() \firstIter = false;System.out.println("Button Call. floor:"+ floor );serviceList.add(floor);]
+			valid -> error[animateDown \missedOpenDown || missedOpen\System.out.println("Missed moving down floor error" );]
+			valid -> valid[animateDown \!missedOpenDown && !firstIter \ System.out.println("current floor:"+ floor );
 				if(!serviceList.isEmpty()){
 					for(int i =0;i<serviceList.size();i++){
-						if(floorNumber==serviceList.get(i)){
-							missedOpen = true;
+						if(currentFloorDown-1==serviceList.get(i)){
+							missedOpenDown = true;
 						}		
 					}
 				} 	
 			]
+			valid -> error[animateUp \missedOpenUp || missedOpen\System.out.println("Missed moving up floor error" );]
+			valid -> valid[animateUp \!missedOpenUp && !firstIter\ System.out.println("current floor:"+ floor );
+				if(!serviceList.isEmpty()){
+					for(int i =0;i<serviceList.size();i++){
+						if(currentFloorUp+1==serviceList.get(i)){
+							missedOpenUp = true;
+						}		
+					}
+				} 	
+			]
+			
+			valid -> error[callLiftToFloor\(serviceList.contains(floor))\System.out.println("multiple press of the same button registered" );]
 			
 		}
 	}

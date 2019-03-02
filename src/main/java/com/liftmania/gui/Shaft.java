@@ -10,6 +10,7 @@ import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import java.util.ArrayList;
 
 import com.liftmania.Lift;
 
@@ -19,9 +20,9 @@ public class Shaft extends JPanel implements Runnable {
 	final Color COLOR_DOORS_OPEN = Color.RED;
 	final Color COLOR_DOORS_CLOSED = Color.GREEN;
 	final Color COLOR_SHAFT = Color.LIGHT_GRAY;
-	
+
 	LiftsVisualiser visualiser;
-	
+
 	public int numFloors;
 
 	JPanel[] grid;
@@ -32,11 +33,11 @@ public class Shaft extends JPanel implements Runnable {
 	long animationPause = 50;
 	int animationStepsPerShaft;
 
-	Queue<AnimationCommand> animationCommands = new LinkedList<AnimationCommand>();
-	
+	//Queue<AnimationCommand> animationCommands = new LinkedList<AnimationCommand>();
+	ArrayList<AnimationCommand> animationCommands = new ArrayList<AnimationCommand>();
 	/**
 	 * Constructs a Shaft object which houses a number of floors and lifts.
-	 * 
+	 *
 	 * @param numFloors
 	 *            - The number of floors
 	 * @param numLifts
@@ -101,7 +102,7 @@ public class Shaft extends JPanel implements Runnable {
 
 	/**
 	 * Places a lift at a particular floor
-	 * 
+	 *
 	 * @param lift
 	 *            - The lift number (0-based)
 	 * @param floor
@@ -142,7 +143,7 @@ public class Shaft extends JPanel implements Runnable {
 
 	/**
 	 * Animates a lift moving to a particular floor
-	 * 
+	 *
 	 * @param lift
 	 *            - The lift (zero-based)
 	 * @param fromFloor
@@ -150,11 +151,12 @@ public class Shaft extends JPanel implements Runnable {
 	 * @param toFloor
 	 *            - The floor to animate to (zero-based)
 	 */
-	public void animateLift(int toFloor) {
 
+	public void animateMovement(int toFloor){
+		int newFloor = 0;
 		//Update lift state
 		lift.setMoving(true);
-		
+
 		int fromFloor = lift.getFloor();
 		setLiftFloor(fromFloor);
 		lift.setMoving(true);
@@ -162,32 +164,36 @@ public class Shaft extends JPanel implements Runnable {
 		if (toFloor > fromFloor) {
 
 			for (int i = fromFloor; i < toFloor; i++) {
+				serviceOtherRequest(lift);
 				animateUp(i);
-				lift.setFloor(i);
+				newFloor = i + 1;
+				lift.setFloor(newFloor);
 			}
 
 		} else {
 
 			for (int i = fromFloor; i > toFloor; i--) {
+				serviceOtherRequest(lift);
 				animateDown(i);
-				lift.setFloor(i);
+				newFloor = i - 1;
+				lift.setFloor(newFloor);
 			}
 
 		}
-		
-		lift.setFloor(toFloor);
-		
-		//Open and close doorts
-		openDoors();
-		try {
-			Thread.sleep(2000);
-		} catch (Exception e) {}
-		closeDoors();
-		
+
+		//lift.setFloor(toFloor);
+	}
+	public void animateLift(int toFloor) {
+
+		animateMovement(toFloor);
+		//Open and close doors
+		openDoors(toFloor);
+		closeDoors(toFloor);
+
 		//Update lift state
-		lift.setMoving(false);
-		
-		
+
+
+
 	}
 
 	public void animateUp(int currentFloor) {
@@ -244,65 +250,115 @@ public class Shaft extends JPanel implements Runnable {
 
 	/**
 	 * Sets a particular lift to open.
-	 * 
+	 *
 	 * @param lift
 	 *            - The lift number (zero-based)
 	 */
-	public void openDoors() {
+	public void openDoors(int floor) {
 		liftColor = COLOR_DOORS_OPEN;
 		setLiftFloor(lift.getFloor());
+		visualiser.controller.openLiftDoor(lift.getId(),floor);
+		lift.setMoving(false);
+		try {
+			Thread.sleep(3000);
+		} catch (Exception e) {}
 	}
+
 
 	/**
 	 * Sets a particular lift to closed.
-	 * 
+	 *
 	 * @param lift
 	 *            - The lift number (zero-based)
 	 */
-	public void closeDoors() {
+	public void closeDoors(int floor) {
 		liftColor = COLOR_DOORS_CLOSED;
 		setLiftFloor(lift.getFloor());
+		visualiser.controller.closeLiftDoor(lift.getId(), floor);
+		lift.setMoving(false);
+		try {
+			Thread.sleep(500);
+		} catch (Exception e) {}
 	}
-	
+
 	/**
 	 * Adds an animation command to the queue for processing by the animation loop
 	 * @param cmd - The command object.
 	 */
 	public void addAnimationCommand(AnimationCommand cmd) {
-		animationCommands.add(cmd);
+		ArrayList<AnimationCommand> listOfCmds = animationCommands;
+		boolean cmdPresent = false;
+
+		if(!listOfCmds.isEmpty())
+			for(int i =0; i<listOfCmds.size();i++){
+				if(listOfCmds.get(i).command== cmd.command && listOfCmds.get(i).toFloor== cmd.toFloor){
+					cmdPresent = true;
+					break;
+				}
+			}
+
+		if(!cmdPresent)
+			animationCommands.add(cmd);
 	}
-	
+
+	public void serviceOtherRequest(Lift lift){
+		if(!animationCommands.isEmpty())
+			//	if(animationCommands.contains(lift)){
+			for(int i = 0; i<animationCommands.size();i++){
+				if(animationCommands.get(i).toFloor ==lift.getFloor()){
+					lift.setMoving(false);
+					//Open and close doors
+					openDoors(lift.getFloor());
+					try {
+						Thread.sleep(3000);
+					} catch (Exception e) {}
+					closeDoors(lift.getFloor());
+
+					//Update lift state
+					lift.setMoving(true);
+					animationCommands.remove(i);
+
+					break;
+				}
+			}
+
+
+	}
 
 	/**
 	 * The animation loop is placed in a separate thread for smoothness purposes.
 	 */
-	
+
 	@Override
 	public void run() {
-		
+
 		while (true) {
-			
+
 			if (animationCommands.size() > 0) {
-				AnimationCommand cmd = animationCommands.remove();
-				
+				AnimationCommand cmd = animationCommands.get(0);
+
 				if (cmd.command == AnimationCommand.Command.move) {
-					animateLift(cmd.toFloor);
+				//	animateLift(cmd.toFloor);
+					animateMovement(cmd.toFloor);
 				} else if (cmd.command == AnimationCommand.Command.close) {
-					//closeDoors(cmd.liftNumber);
-					setLiftFloor(cmd.toFloor);
+					closeDoors(cmd.toFloor);
+				//	setLiftFloor(cmd.toFloor);
+				//	closeDoors();
 				} else if (cmd.command == AnimationCommand.Command.open) {
-					openDoors();
+					//openDoors();
+					openDoors(cmd.toFloor);
 					//setLiftFloor(cmd.fromFloor);
 				}
+				animationCommands.remove(0);
 			}
-			
+
 			try {
 				Thread.sleep(250);
 			} catch (Exception e) {}
-			
-			
+
+
 		}
-		
+
 	}
 
 }

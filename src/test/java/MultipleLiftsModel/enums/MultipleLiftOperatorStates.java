@@ -1,8 +1,9 @@
 package MultipleLiftsModel.enums;
 
 public enum MultipleLiftOperatorStates {
-    IDLE,
-    SERVICING,
-    FINALISING
+    CLOSED,
+    OPEN,
+    LIFT_CALL,
+    MOVE
 
 }
