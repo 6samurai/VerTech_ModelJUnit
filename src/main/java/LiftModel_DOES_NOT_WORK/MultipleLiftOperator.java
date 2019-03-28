@@ -1,4 +1,4 @@
-package LiftModel;
+package LiftModel_DOES_NOT_WORK;
 
 import com.liftmania.Lift;
 
@@ -57,52 +57,6 @@ public class MultipleLiftOperator {
         return lift;
     }
 
- /*   public ArrayList<Lift> getClosestLifts(Lift [] lifts, int floor){
-        ArrayList<Lift> closestLifts = getClosestStationaryLifts(lifts, floor);
-        if(closestLifts.size()>0)
-            return closestLifts;
-        else{
-            return (getClosestMovingLifts(lifts, floor));
-        }
-    }
-
-    public ArrayList<Lift> getClosestMovingLifts(Lift [] lifts, int floor){
-        ArrayList<Lift> result = new ArrayList<Lift>();
-        int maxIterations = lifts.length*numFloors;
-        int distance = -1;
-        while (result.size() == 0 && distance <maxIterations) {
-            distance++;
-
-            for (Lift lift : lifts) {
-                if(lift.isMoving()){
-                    if (lift.distanceFromFloor(floor) == distance && !lift.getIsMovingUp()) {
-                        result.add(lift);
-                    } else if (lift.distanceFromFloor(floor) == -distance && lift.getIsMovingUp()) {
-                        result.add(lift);
-                    }
-                }
-            }
-        }
-
-        return result;
-    }
-
-    public ArrayList<Lift> getClosestStationaryLifts(Lift [] lifts,int floor) {
-
-        ArrayList<Lift> result = new ArrayList<Lift>();
-        int maxIterations = lifts.length*numFloors;
-        int distance = -1;
-        while (result.size() == 0 && distance <maxIterations) {
-            distance++;
-            for (Lift lift : lifts) {
-                if (Math.abs(lift.distanceFromFloor(floor)) == distance && !lift.isMoving()) {
-                    result.add(lift);
-                }
-            }
-        }
-
-        return result;
-    }*/
 
     public ArrayList<Lift>getClosestLifts(Lift [] lifts,int floor){
         ArrayList<Lift> result = new ArrayList<Lift>();

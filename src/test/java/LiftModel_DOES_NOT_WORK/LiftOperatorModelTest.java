@@ -1,6 +1,6 @@
-package LiftModel;
+package LiftModel_DOES_NOT_WORK;
 
-import LiftModel.enums.LiftOperatorStates;
+import LiftModel_DOES_NOT_WORK.enums.LiftOperatorStates;
 import com.liftmania.Lift;
 import com.liftmania.LiftController;
 import junit.framework.Assert;
@@ -11,7 +11,6 @@ import nz.ac.waikato.modeljunit.coverage.TransitionPairCoverage;
 import org.junit.Test;
 
 import java.io.FileNotFoundException;
-import java.util.ArrayList;
 import java.util.Random;
 
 public class LiftOperatorModelTest implements FsmModel {
@@ -30,10 +29,6 @@ public class LiftOperatorModelTest implements FsmModel {
     private  boolean ButtonPress = false;
     private Random random = new Random();
 
-
-
-    //SUT
-  //  private LiftOperator sut = new LiftOperator();
 
     //Method implementations
     public LiftOperatorStates getState() {
@@ -115,54 +110,6 @@ public class LiftOperatorModelTest implements FsmModel {
         Assert.assertEquals("The model's authorised state doesn't match the SUT's state.", expectedList.getId(),lifts[0].getId());
        // Assert.assertEquals("The model's authorised state doesn't match the SUT's state.", DoorOpen,lifts[0].isOpen());
         //Assert.assertEquals("The model's Moving state doesn't match the SUT's state.",LiftMove,lifts[0].isMoving() );
-
-    }
-
-
-    public boolean closeDoorToButtonPressGuard() {
-        return getState().equals(LiftOperatorStates.DOOR_CLOSED_STATIONARY_LIFT) && !sut.getLifts()[0].isMoving();
-    }
-
-    public @Action
-    void closeDoorToButtonPress() {
-        int randomLiftCall = random.nextInt(numFloors);
-        //  sut.callLiftToFloor(randomLiftCall);
-        // DoorOpen =  sut.getLifts()[0].isOpen();
-        // LiftMove = sut.getLifts()[0].isMoving();
-        modelState = LiftOperatorStates.BUTTON_PRESSED;
-        Lift expectedList = liftOperator.buttonPress(lifts,1);
-        Assert.assertEquals("The model's authorised state doesn't match the SUT's state.", expectedList.getId(),lifts[0].getId());
-        // Assert.assertEquals("The model's authorised state doesn't match the SUT's state.", DoorOpen,lifts[0].isOpen());
-        //Assert.assertEquals("The model's Moving state doesn't match the SUT's state.",LiftMove,lifts[0].isMoving() );
-
-    }
-
-    public boolean ButtonPressToCloseDoorGuard() {
-        return getState().equals(LiftOperatorStates.BUTTON_PRESSED) && !sut.getLifts()[0].isMoving();
-    }
-
-    public @Action
-    void ButtonPressToCloseDoor() {
-
-        modelState = LiftOperatorStates.DOOR_CLOSED_STATIONARY_LIFT;
-        liftOperator.closeLiftDoor(lifts[0]);
-
-        Assert.assertEquals("The model's authorised state doesn't match the SUT's state.", false,lifts[0].isOpen());
-
-    }
-
-    public boolean ButtonPressToLiftMoveGuard() {
-        return getState().equals(LiftOperatorStates.BUTTON_PRESSED) && !sut.getLifts()[0].isOpen() ;
-    }
-
-    public @Action
-    void ButtonPressToLiftMove() {
-        int randomLiftCall = random.nextInt(numFloors);
-        modelState = LiftOperatorStates.DOOR_CLOSED_LIFT_MOVE;
-        liftOperator.moveLift(lifts[0], randomLiftCall);
-
-        Assert.assertEquals("The model's authorised state doesn't match the SUT's state.", false,lifts[0].isOpen());
-        Assert.assertEquals("The model's authorised state doesn't match the SUT's state.", true,lifts[0].isMoving());
 
     }
 

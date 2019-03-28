@@ -112,23 +112,20 @@ GLOBAL {
 				}
 				NORMAL{
 					doorOpen { floor = lift.getFloor();System.out.println("open door floor: "+floor);}
-				%%	idle { id = lift.getId();System.out.println("Lift Id: "+id);}
+					idle { id = lift.getId();System.out.println("Lift Id: "+id);}
 					moveLift{ floor = lift.getFloor();System.out.println("move floor: "+floor);}
 					doorClosed { floor = lift.getFloor();System.out.println("close floor: "+floor);}
 				}
 				STARTING{
-					doorClosed {id = lift.getId(); floor = lift.getFloor();System.out.println("floor: "+floor + " id:" +id + "liftIsMoving " + liftIsMoving + " doorIsOpen"+doorIsOpen); }
-					
-				%%	idle {id = lift.getId(); floor = lift.getFloor();System.out.println("floor: "+floor + " id:" +id + "liftIsMoving " + liftIsMoving + " doorIsOpen"+doorIsOpen); }
+					idle {id = lift.getId(); floor = lift.getFloor();System.out.println("floor: "+floor + " id:" +id + "liftIsMoving " + liftIsMoving + " doorIsOpen"+doorIsOpen); }
+
 				}
 			}
 			
 			TRANSITIONS{
-				doorClosed -> moveLift[setMoving(liftIsMoving)\!doorIsOpen && !liftIsMoving  \liftIsMoving=true;System.out.println("Lift is moving");]
-				doorClosed -> doorOpen[openDoors\!doorIsOpen && !liftIsMoving && openLiftCount%2 ==0  \ openLiftCount++; doorIsOpen=true;closeDoorClock.reset() ;System.out.println("Door is open");]
 				
-				%%idle -> moveLift[setMoving(liftIsMoving)\!doorIsOpen && !liftIsMoving  \liftIsMoving=true;System.out.println("Lift is moving");]
-				%%idle -> doorOpen[openDoors\!doorIsOpen && !liftIsMoving && openLiftCount%2 ==0  \ openLiftCount++; doorIsOpen=true;closeDoorClock.reset() ;System.out.println("Door is open");]
+				idle -> moveLift[setMoving(liftIsMoving)\!doorIsOpen && !liftIsMoving  \liftIsMoving=true;System.out.println("Lift is moving");]
+				idle -> doorOpen[openDoors\!doorIsOpen && !liftIsMoving && openLiftCount%2 ==0  \ openLiftCount++; doorIsOpen=true;closeDoorClock.reset() ;System.out.println("Door is open");]
 				moveLift -> doorOpen[openDoors\!doorIsOpen && liftIsMoving && openLiftCount%2 ==0 \
 					openLiftCount++; doorIsOpen = true;liftIsMoving=false;closeDoorClock.reset();System.out.println("Destination reached from moving +"+floor );
 					if(!serviceList.isEmpty())
@@ -139,7 +136,7 @@ GLOBAL {
 				]		
 				moveLift -> moveLift[setMoving(liftIsMoving)\!doorIsOpen && liftIsMoving \System.out.println("Lift moving to next floor : " + liftIsMoving );]
 				doorOpen ->doorClosed[closeDoors\doorIsOpen && !liftIsMoving && closeDoorClock.compareTo(3)>=0 && openLiftCount%2 ==1 \openLiftCount--;moveLiftClock.reset();doorIsOpen=false;System.out.println("Door is closed due to timer");]
-				doorClosed -> doorClosed[setMoving()\ \System.out.println("Door is closed and idle");]
+				doorClosed -> idle[setMoving()\ \System.out.println("Door is closed and idle");]
 				
 				
 					

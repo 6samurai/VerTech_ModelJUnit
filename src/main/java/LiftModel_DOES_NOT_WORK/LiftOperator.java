@@ -1,7 +1,6 @@
-package LiftModel;
+package LiftModel_DOES_NOT_WORK;
 
 import com.liftmania.Lift;
-import com.liftmania.LiftController;
 
 import java.util.ArrayList;
 
@@ -91,7 +90,8 @@ public class LiftOperator {
          ArrayList<Lift> closestLifts = getClosestLifts(lifts,floor);
 
          if (closestLifts.size() == 0) {
-                 throw new RuntimeException("Could not find an available lift.");
+             throw new RuntimeException("Could not find an available lift. input floor"+  floor+" " + lifts[0].getFloor() +" " + lifts[0].isOpen() +" " +  lifts[0].getIsMovingUp() + " " + lifts[0].isMoving());
+
          }
 
          //Pick random lift

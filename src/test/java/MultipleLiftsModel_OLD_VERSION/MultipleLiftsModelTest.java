@@ -1,8 +1,8 @@
-package MultipleLiftsModel;
+package MultipleLiftsModel_OLD_VERSION;
 
-import LiftModel.MultipleLiftOperator;
-import LiftModel.ServiceList;
-import MultipleLiftsModel.enums.MultipleLiftOperatorStates;
+import LiftModel_DOES_NOT_WORK.MultipleLiftOperator;
+import LiftModel_DOES_NOT_WORK.ServiceList;
+import MultipleLiftsModel_OLD_VERSION.enums.MultipleLiftOperatorStates;
 import com.liftmania.Lift;
 import com.liftmania.LiftController;
 import junit.framework.Assert;
@@ -102,7 +102,7 @@ public class MultipleLiftsModelTest implements FsmModel {
         modelState = MultipleLiftOperatorStates.CLOSED;
 
         int check = 0;
-        modelState = MultipleLiftOperatorStates.LIFT_CALL;
+       // modelState = SingleLiftOperatorStates.LIFT_CALL;
 
         int randomFloorCall = random.nextInt(numFloors);
 
@@ -151,9 +151,9 @@ public class MultipleLiftsModelTest implements FsmModel {
     void getCloseDoor() {
 
   /*      if (serviceList.size() > 0) {
-            modelState = MultipleLiftOperatorStates.SERVICING;
+            modelState = SingleLiftOperatorStates.SERVICING;
         } else {
-            modelState = MultipleLiftOperatorStates.IDLE;
+            modelState = SingleLiftOperatorStates.IDLE;
         }*/
 
         modelState = MultipleLiftOperatorStates.CLOSED;

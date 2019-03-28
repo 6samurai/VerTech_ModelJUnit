@@ -1,4 +1,4 @@
-package MultipleLiftsModel.enums;
+package MultipleLiftsModel_OLD_VERSION.enums;
 
 public enum MultipleLiftOperatorStates {
     CLOSED,
