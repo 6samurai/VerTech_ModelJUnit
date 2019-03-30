@@ -1,7 +1,7 @@
 package SingleLiftModel;
 
-import LiftModel_DOES_NOT_WORK.MultipleLiftOperator;
-import LiftModel_DOES_NOT_WORK.ServiceList;
+import LiftModel.MultipleLiftOperator;
+import LiftModel.ServiceList;
 import SingleLiftModel.enums.SingleLiftOperatorStates;
 import com.liftmania.Lift;
 import com.liftmania.LiftController;
@@ -35,7 +35,7 @@ public class SingleLiftModelTest implements TimedFsmModel {
     LiftController sut = new LiftController(numFloors, numLifts, false);
     MultipleLiftOperator multipleLiftOperator = new MultipleLiftOperator(numFloors);
     ArrayList<ServiceList> serviceList = new ArrayList<ServiceList>();
-    ArrayList<Integer> validLifts = new ArrayList<Integer>();
+
     //Variables
     private SingleLiftOperatorStates modelState = SingleLiftOperatorStates.CLOSED;
     private Random random = new Random();
@@ -71,6 +71,8 @@ public class SingleLiftModelTest implements TimedFsmModel {
             lift = lifts[0];
             openDoorCarriedOut = false;
             closeDoorCarriedOut = false;
+            moveLiftTime = 0;
+            closeDoorTime =0;
         }
     }
 
@@ -85,6 +87,7 @@ public class SingleLiftModelTest implements TimedFsmModel {
 
         if (modelState.equals(SingleLiftOperatorStates.OPEN)) {
             openDoorCarriedOut = false;
+            closeDoorTime = now;
         }
 
 
@@ -92,53 +95,63 @@ public class SingleLiftModelTest implements TimedFsmModel {
         firstOperation = false;
         int randomFloorCall = random.nextInt(numFloors);
 
-        ArrayList<Lift> sutListOfLifts = sut.getClosestLifts(randomFloorCall);
+       // ArrayList<Lift> sutListOfLifts = sut.getClosestLifts(randomFloorCall);
 
         listOfLifts = multipleLiftOperator.getClosestLifts(lifts, randomFloorCall);
+        lifts = sut.getLifts();
 
-
-        if (listOfLifts.size() <= 1)
+    //     if (listOfLifts.size() <= 1)
             Assert.assertEquals("Lift in SUT matches lift used", sut.getLifts()[lifts[0].getId()], lifts[0]);
-        else {
+      /*  else {
             for (int i = 0; i < listOfLifts.size(); i++) {
                 if (sutListOfLifts.get(i).getId() == listOfLifts.get(i).getId()) {
                     check++;
                 }
             }
             Assert.assertEquals("Lift in SUT matches lift used: " + check + "list of Lifts size: " + listOfLifts.size() + " sut lift size:" + sutListOfLifts.size(), check, listOfLifts.size());
-        }
+        }*/
 
         createNewRequest(lifts[0], randomFloorCall);
+
+        try {
+            Thread.sleep(250+50);
+        } catch (Exception e) {
+        }
     }
 
     public boolean closeDoorGuard() {
-        return ((getState().equals(SingleLiftOperatorStates.LIFT_CALL) && lifts[0].isOpen()) || (getState().equals(SingleLiftOperatorStates.OPEN) && now - closeDoorTime == 3) && !closeDoorCarriedOut);
+        return ((getState().equals(SingleLiftOperatorStates.LIFT_CALL) && lifts[0].isOpen()) || (getState().equals(SingleLiftOperatorStates.OPEN) ) && !closeDoorCarriedOut);
 
     }
 
     public @Action
     void closeDoor() {
-
+        boolean validTime = false;
         closeDoorCarriedOut = true;
         openDoorCarriedOut = false;
         if (modelState.equals(SingleLiftOperatorStates.OPEN)) {
             deleteRequest(lifts[0]);
         }
 
-        moveLiftTime = now;
+        if( now - closeDoorTime <= 3){
+            validTime = true;
+        }
+
         modelState = SingleLiftOperatorStates.CLOSED;
 
+        sut.closeLiftDoor(lifts[0].getId(), lifts[0].getFloor());
 
-        sut.closeLiftDoor(0, lifts[0].getFloor());
-
-        multipleLiftOperator.closeLiftDoor(lifts[0]);
+    //    multipleLiftOperator.closeLiftDoor(lifts[0]);
+        lifts = sut.getLifts();
+        moveLiftTime = now;
 
 
         try {
-                Thread.sleep(500);
+                Thread.sleep(500 + 250 + 50);
             } catch (Exception e) {
         }
 
+        Assert.assertEquals("Timer to get to close door expired", true,validTime);
         Assert.assertEquals("Lift Open door in SUT  does not match lift used", false, lifts[0].isOpen());
         Assert.assertEquals("Lift Moving  in SUT  does not match lift used", false, lifts[0].isMoving());
 
@@ -157,19 +170,19 @@ public class SingleLiftModelTest implements TimedFsmModel {
 
         openDoorCarriedOut = true;
         closeDoorCarriedOut = false;
-        closeDoorTime = now;
+
 
         modelState = SingleLiftOperatorStates.OPEN;
 
         sut.openLiftDoor(lifts[0].getId(), lifts[0].getFloor());
-        multipleLiftOperator.openLiftDoor(lifts[0]);
+   //     multipleLiftOperator.openLiftDoor(lifts[0]);
 
-   /*     try {
-            Thread.sleep(3000);
+        try {
+            Thread.sleep(50 + 250 + 3000);
         } catch (Exception e) {
-        }*/
-
-
+        }
+        lifts = sut.getLifts();
+        closeDoorTime = now;
         Assert.assertEquals("Lift Open door in SUT  does not match lift used", true, lifts[0].isOpen());
         Assert.assertEquals("Lift Moving  in SUT  does not match lift used", false, lifts[0].isMoving());
     }
@@ -177,8 +190,8 @@ public class SingleLiftModelTest implements TimedFsmModel {
 
     public boolean moveLiftGuard() {
         boolean validTimer = false;
-
-        return (getState().equals(SingleLiftOperatorStates.LIFT_CALL) || getState().equals(SingleLiftOperatorStates.CLOSED)) && serviceList.size() > 0 && !lifts[0].isOpen();
+        ServiceList currentEntry = new ServiceList(lifts[0], lifts[0].getFloor());
+        return (getState().equals(SingleLiftOperatorStates.LIFT_CALL) || getState().equals(SingleLiftOperatorStates.CLOSED) || getState().equals(SingleLiftOperatorStates.MOVE) ) && serviceList.size() > 0 && !lifts[0].isOpen() && !findServiceListEntry(currentEntry) ;
 
     }
 
@@ -196,7 +209,7 @@ public class SingleLiftModelTest implements TimedFsmModel {
 
         modelState = SingleLiftOperatorStates.MOVE;
 
-        int closestFloor = numFloors;
+    /*    int closestFloor = numFloors;
         int floorDifference = 0;
         int serviceId;
         for (int i = 0; i < serviceList.size(); i++) {
@@ -215,28 +228,44 @@ public class SingleLiftModelTest implements TimedFsmModel {
 
 
         }
+           sut.moveLift(lifts[0], closestFloor);
+        */
 
-        sut.moveLift(lifts[0], closestFloor);
+        if(serviceList.get(0).getFloor() - lifts[0].getFloor() > 0){
+            sut.moveLift(lifts[0], lifts[0].getFloor()+1);
+        } else{
+            sut.moveLift(lifts[0], lifts[0].getFloor()-1);
+        }
 
-        multipleLiftOperator.moveLift(lifts[0], closestFloor);
+     /*   if(lifts[0].getIsMovingUp()){
+            sut.moveLift(lifts[0], lifts[0].getFloor()+1);
+        } else{
+            sut.moveLift(lifts[0], lifts[0].getFloor()-1);
+        }*/
+
+
+
+   //     multipleLiftOperator.moveLift(lifts[0], closestFloor);
 
         try {
-            Thread.sleep(50);
+            Thread.sleep(50 + 250);
         } catch (Exception e) {
         }
 
+        lifts = sut.getLifts();
 
-        Assert.assertEquals("Lift Open door in SUT  does not match lift used", false, lifts[0].isOpen());
         Assert.assertEquals("Lift Moving  in SUT  does not match lift used", true, lifts[0].isMoving());
+        Assert.assertEquals("Lift Open door in SUT  does not match lift used", false, lifts[0].isOpen());
+
     }
 
-    public @Action
+ /*   public @Action
     void unguardedAction() throws InterruptedException {
         System.out.println("current time " + now);
         TimeUnit.SECONDS.sleep((getNextTimeIncrement(new Random())));
 
 
-    }
+    }*/
 
     private void deleteRequest(Lift lift) {
 

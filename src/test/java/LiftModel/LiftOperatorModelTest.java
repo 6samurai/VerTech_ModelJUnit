@@ -1,6 +1,6 @@
-package LiftModel_DOES_NOT_WORK;
+package LiftModel;
 
-import LiftModel_DOES_NOT_WORK.enums.LiftOperatorStates;
+import LiftModel.enums.LiftOperatorStates;
 import com.liftmania.Lift;
 import com.liftmania.LiftController;
 import junit.framework.Assert;

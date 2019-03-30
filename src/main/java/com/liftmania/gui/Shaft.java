@@ -321,8 +321,6 @@ public class Shaft extends JPanel implements Runnable {
 					break;
 				}
 			}
-
-
 	}
 
 	/**

@@ -1,4 +1,4 @@
-package LiftModel_DOES_NOT_WORK;
+package LiftModel;
 
 import com.liftmania.Lift;
 

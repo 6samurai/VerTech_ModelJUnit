@@ -1,7 +1,7 @@
 package MultipleLiftsModel_OLD_VERSION;
 
-import LiftModel_DOES_NOT_WORK.MultipleLiftOperator;
-import LiftModel_DOES_NOT_WORK.ServiceList;
+import LiftModel.MultipleLiftOperator;
+import LiftModel.ServiceList;
 import MultipleLiftsModel_OLD_VERSION.enums.MultipleLiftOperatorStates;
 import com.liftmania.Lift;
 import com.liftmania.LiftController;

@@ -3,8 +3,8 @@ package LiftControllerModel;
 import LiftControllerModel.LiftObject.LiftObject;
 import LiftControllerModel.LiftObject.LiftState;
 import LiftControllerModel.enums.LiftControllerStates;
-import LiftModel_DOES_NOT_WORK.MultipleLiftOperator;
-import LiftModel_DOES_NOT_WORK.ServiceList;
+import LiftModel.MultipleLiftOperator;
+import LiftModel.ServiceList;
 import com.liftmania.Lift;
 import com.liftmania.LiftController;
 import junit.framework.Assert;
@@ -58,7 +58,7 @@ public class LiftControllerModel implements TimedFsmModel {
         modelState = LiftControllerStates.IDLE;
 
         if (reset) {
-
+            //assuming range of floors is between 0 and random max number
             numFloors = random.nextInt(10) + 1;
             numLifts = random.nextInt(10) + 1;
 
@@ -108,6 +108,11 @@ public class LiftControllerModel implements TimedFsmModel {
 
             //if all lifts are closed and stationary with items still required to be serviced - lift is invalid behaviour
             if (liftStates.get(i).getLiftState().equals(LiftState.CLOSED) && serviceList.size() == 0) {
+                check = true;
+                break;
+            }
+
+            if (!(listOfLifts.get(i).getFloor()<numFloors && listOfLifts.get(i).getFloor()>=0)) {
                 check = true;
                 break;
             }
@@ -177,7 +182,7 @@ public class LiftControllerModel implements TimedFsmModel {
         //    timedModel.setTimeoutProbability(0.5);
 
         final GreedyTester tester = new GreedyTester(timedModel);
-        tester.setRandom(new Random());
+        tester.setRandom(new Random(100));
         tester.setResetProbability(0.001);
         final GraphListener graphListener = tester.buildGraph();
         //    graphListener.printGraphDot("/users/Owner/Desktop/output.dot");

@@ -1,4 +1,4 @@
-package LiftModel_DOES_NOT_WORK.enums;
+package LiftModel.enums;
 
 public enum LiftOperatorStates {
     DOOR_CLOSED_LIFT_MOVE,
