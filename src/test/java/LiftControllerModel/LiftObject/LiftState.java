@@ -4,6 +4,6 @@ public enum LiftState{
     OPEN,
     CLOSED,
     MOVING,
-    BUTTON_PRESS
+    LIFT_CALL
 
 }

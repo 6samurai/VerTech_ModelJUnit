@@ -9,6 +9,7 @@ import junit.framework.Assert;
 import nz.ac.waikato.modeljunit.*;
 import nz.ac.waikato.modeljunit.coverage.ActionCoverage;
 import nz.ac.waikato.modeljunit.coverage.StateCoverage;
+import nz.ac.waikato.modeljunit.coverage.TransitionCoverage;
 import nz.ac.waikato.modeljunit.coverage.TransitionPairCoverage;
 import nz.ac.waikato.modeljunit.timing.Time;
 import nz.ac.waikato.modeljunit.timing.TimedFsmModel;
@@ -22,6 +23,10 @@ import java.util.concurrent.TimeUnit;
 
 public class SingleLiftModelTest implements TimedFsmModel {
 
+    private static int callLift = 10;
+    private static int probTotal = 100;
+    @Time
+    public int now;
     int numFloors = 6;
     int numLifts = 1;
     Lift lift;
@@ -30,23 +35,15 @@ public class SingleLiftModelTest implements TimedFsmModel {
     LiftController sut = new LiftController(numFloors, numLifts, false);
     MultipleLiftOperator multipleLiftOperator = new MultipleLiftOperator(numFloors);
     ArrayList<ServiceList> serviceList = new ArrayList<ServiceList>();
+    ArrayList<Integer> validLifts = new ArrayList<Integer>();
     //Variables
     private SingleLiftOperatorStates modelState = SingleLiftOperatorStates.CLOSED;
-
     private Random random = new Random();
-    ArrayList<Integer> validLifts = new ArrayList<Integer>();
-
     private int closeDoorTime;
     private int moveLiftTime;
-
-    private static int callLift = 10;
-    private static int probTotal = 100;
-    private boolean firstOperation= false;
+    private boolean firstOperation = false;
     private boolean openDoorCarriedOut = false;
     private boolean closeDoorCarriedOut = false;
-    @Time
-    public int now;
-
 
     @Override
     public int getNextTimeIncrement(Random random) {
@@ -78,7 +75,7 @@ public class SingleLiftModelTest implements TimedFsmModel {
     }
 
     public boolean buttonPressGuard() {
-        return (getState().equals(SingleLiftOperatorStates.CLOSED) || getState().equals(SingleLiftOperatorStates.MOVE) || getState().equals(SingleLiftOperatorStates.OPEN) &&  random.nextInt(probTotal) < callLift ) || firstOperation ;
+        return ((getState().equals(SingleLiftOperatorStates.CLOSED) && !lifts[0].isMoving() ) || (getState().equals(SingleLiftOperatorStates.MOVE)&& lifts[0].isMoving()  )|| (getState().equals(SingleLiftOperatorStates.OPEN)  && !lifts[0].isMoving() ) && random.nextInt(probTotal) < callLift) || firstOperation;
     }
 
     //idle to servicing states through callLiftToFloor
@@ -86,7 +83,7 @@ public class SingleLiftModelTest implements TimedFsmModel {
     void buttonPress() {
         int check = 0;
 
-        if(modelState.equals(SingleLiftOperatorStates.OPEN)){
+        if (modelState.equals(SingleLiftOperatorStates.OPEN)) {
             openDoorCarriedOut = false;
         }
 
@@ -100,25 +97,22 @@ public class SingleLiftModelTest implements TimedFsmModel {
         listOfLifts = multipleLiftOperator.getClosestLifts(lifts, randomFloorCall);
 
 
-        if(listOfLifts.size()<=1)
-            Assert.assertEquals("Lift in SUT matches lift used", sut.getLifts()[lift.getId()], lift);
-        else{
-            for(int i = 0; i<listOfLifts.size();i++){
-                if(sutListOfLifts.get(i).getId()== listOfLifts.get(i).getId()){
+        if (listOfLifts.size() <= 1)
+            Assert.assertEquals("Lift in SUT matches lift used", sut.getLifts()[lifts[0].getId()], lifts[0]);
+        else {
+            for (int i = 0; i < listOfLifts.size(); i++) {
+                if (sutListOfLifts.get(i).getId() == listOfLifts.get(i).getId()) {
                     check++;
                 }
             }
-            Assert.assertEquals("Lift in SUT matches lift used: " + check +"list of Lifts size: " +listOfLifts.size() + " sut lift size:" +sutListOfLifts.size()  ,check, listOfLifts.size());
+            Assert.assertEquals("Lift in SUT matches lift used: " + check + "list of Lifts size: " + listOfLifts.size() + " sut lift size:" + sutListOfLifts.size(), check, listOfLifts.size());
         }
 
-
-//        lift = multipleLiftOperator.getClosestLift(listOfLifts);
-
-        createNewRequest(lift, randomFloorCall);
+        createNewRequest(lifts[0], randomFloorCall);
     }
 
     public boolean closeDoorGuard() {
-        return (getState().equals(SingleLiftOperatorStates.LIFT_CALL) || (getState().equals(SingleLiftOperatorStates.OPEN) && now -closeDoorTime ==3) && !closeDoorCarriedOut);
+        return ((getState().equals(SingleLiftOperatorStates.LIFT_CALL) && lifts[0].isOpen()) || (getState().equals(SingleLiftOperatorStates.OPEN) && now - closeDoorTime == 3) && !closeDoorCarriedOut);
 
     }
 
@@ -127,30 +121,34 @@ public class SingleLiftModelTest implements TimedFsmModel {
 
         closeDoorCarriedOut = true;
         openDoorCarriedOut = false;
-        modelState = SingleLiftOperatorStates.CLOSED;
-
-        int randomLift = random.nextInt(numLifts);
-        sut.closeLiftDoor(randomLift,lift.getFloor());
-
-        multipleLiftOperator.closeLiftDoor(lifts[randomLift]);
-
-        try {
-            Thread.sleep(500);
-        } catch (Exception e) {}
-
-        Assert.assertEquals("Lift in SUT matches lift used", sut.getLifts()[randomLift].getId(), lifts[randomLift].getId());
-        Assert.assertEquals("Lift in SUT matches lift used", sut.getLifts()[randomLift].isOpen(), lifts[randomLift].isOpen());
-        Assert.assertEquals("Lift in SUT matches lift used", sut.getLifts()[randomLift].isMoving(), lifts[randomLift].isMoving());
-        Assert.assertEquals("Lift in SUT matches lift used", false, lifts[randomLift].isOpen());
-        Assert.assertEquals("Lift in SUT matches lift used",false, lifts[randomLift].isMoving());
+        if (modelState.equals(SingleLiftOperatorStates.OPEN)) {
+            deleteRequest(lifts[0]);
+        }
 
         moveLiftTime = now;
+        modelState = SingleLiftOperatorStates.CLOSED;
+
+
+        sut.closeLiftDoor(0, lifts[0].getFloor());
+
+        multipleLiftOperator.closeLiftDoor(lifts[0]);
+
+
+        try {
+                Thread.sleep(500);
+            } catch (Exception e) {
+        }
+
+        Assert.assertEquals("Lift Open door in SUT  does not match lift used", false, lifts[0].isOpen());
+        Assert.assertEquals("Lift Moving  in SUT  does not match lift used", false, lifts[0].isMoving());
+
+
     }
 
     public boolean openDoorGuard() {
 
-        ServiceList currentEntry = new ServiceList(lift, lift.getFloor());
-        return (getState().equals(SingleLiftOperatorStates.LIFT_CALL)  || getState().equals(SingleLiftOperatorStates.MOVE)) && findServiceListEntry(currentEntry) && !openDoorCarriedOut ;
+        ServiceList currentEntry = new ServiceList(lifts[0], lifts[0].getFloor());
+        return (getState().equals(SingleLiftOperatorStates.LIFT_CALL) || getState().equals(SingleLiftOperatorStates.MOVE)) && findServiceListEntry(currentEntry) && !openDoorCarriedOut;
 
     }
 
@@ -160,84 +158,81 @@ public class SingleLiftModelTest implements TimedFsmModel {
         openDoorCarriedOut = true;
         closeDoorCarriedOut = false;
         closeDoorTime = now;
+
         modelState = SingleLiftOperatorStates.OPEN;
 
-        int randomLift = random.nextInt(numLifts);
-        deleteRequest(lifts[randomLift]);
+        sut.openLiftDoor(lifts[0].getId(), lifts[0].getFloor());
+        multipleLiftOperator.openLiftDoor(lifts[0]);
 
-        sut.openLiftDoor(randomLift,lift.getFloor());
-
-        multipleLiftOperator.openLiftDoor(lifts[randomLift]);
-
-        ServiceList currentEntry = new ServiceList(lift, lift.getFloor());
-        serviceList.remove(currentEntry);
-
-        try {
+   /*     try {
             Thread.sleep(3000);
-        } catch (Exception e) {}
+        } catch (Exception e) {
+        }*/
 
-        Assert.assertEquals("Lift in SUT matches lift used", sut.getLifts()[randomLift].getId(), lifts[randomLift].getId());
-        Assert.assertEquals("Lift in SUT matches lift used", sut.getLifts()[randomLift].isOpen(), lifts[randomLift].isOpen());
-        Assert.assertEquals("Lift in SUT matches lift used", sut.getLifts()[randomLift].isMoving(), lifts[randomLift].isMoving());
-        Assert.assertEquals("Lift in SUT matches lift used", true, lifts[randomLift].isOpen());
-        Assert.assertEquals("Lift in SUT matches lift used",false, lifts[randomLift].isMoving());
+
+        Assert.assertEquals("Lift Open door in SUT  does not match lift used", true, lifts[0].isOpen());
+        Assert.assertEquals("Lift Moving  in SUT  does not match lift used", false, lifts[0].isMoving());
     }
 
 
     public boolean moveLiftGuard() {
         boolean validTimer = false;
-        if(!lift.isMoving()){
-            if(now - moveLiftTime<3)
-            validTimer = true;
 
-        } else{
-            validTimer = true;
-        }
-        return (getState().equals(SingleLiftOperatorStates.LIFT_CALL) || getState().equals(SingleLiftOperatorStates.CLOSED) ) && serviceList.size()>0 && !lift.isOpen() && validTimer ;
+        return (getState().equals(SingleLiftOperatorStates.LIFT_CALL) || getState().equals(SingleLiftOperatorStates.CLOSED)) && serviceList.size() > 0 && !lifts[0].isOpen();
 
     }
 
     public @Action
-    void  moveLift() {
+    void moveLift() {
+
+        boolean validTimer = false;
+        if (modelState.equals(SingleLiftOperatorStates.CLOSED)) {
+            if (now - moveLiftTime <= 3)
+                validTimer = true;
+
+            Assert.assertEquals("Move time limit exceeded " + now + " moveLiftTimer " + moveLiftTime, true, validTimer);
+
+        }
 
         modelState = SingleLiftOperatorStates.MOVE;
 
         int closestFloor = numFloors;
         int floorDifference = 0;
         int serviceId;
-        for(int i =0; i<serviceList.size();i++){
-            if(!lift.isMoving()){
-                floorDifference =Math.abs(lift.distanceFromFloor(serviceList.get(i).getFloor()))-lift.getFloor();
-                if( floorDifference<closestFloor){
-                    closestFloor = floorDifference;
+        for (int i = 0; i < serviceList.size(); i++) {
+            if (!lifts[0].isMoving()) {
+                floorDifference = Math.abs(lifts[0].distanceFromFloor(serviceList.get(i).getFloor())) - lifts[0].getFloor();
+                if (floorDifference < closestFloor) {
+                    closestFloor = serviceList.get(i).getFloor();
                     serviceId = i;
                 }
-            }else if( (lift.distanceFromFloor(serviceList.get(i).getFloor())< closestFloor && !lift.getIsMovingUp() ) ||
-                    (lift.distanceFromFloor(serviceList.get(i).getFloor())*-1 < closestFloor&& lift.getIsMovingUp())) {
-                closestFloor = floorDifference;
+            } else if ((lifts[0].distanceFromFloor(serviceList.get(i).getFloor()) < closestFloor && !lifts[0].getIsMovingUp()) ||
+                    (lifts[0].distanceFromFloor(serviceList.get(i).getFloor()) * -1 < closestFloor && lifts[0].getIsMovingUp())) {
+                closestFloor = serviceList.get(i).getFloor();
                 serviceId = i;
 
             }
 
 
-
         }
 
-        sut.moveLift(lift,closestFloor);
+        sut.moveLift(lifts[0], closestFloor);
 
-        multipleLiftOperator.moveLift(lift,closestFloor);
+        multipleLiftOperator.moveLift(lifts[0], closestFloor);
 
         try {
-            Thread.sleep(250+ 50*(numFloors-lift.getFloor()));
-        } catch (Exception e) {}
+            Thread.sleep(50);
+        } catch (Exception e) {
+        }
 
 
-        Assert.assertEquals("Lift in SUT is open", false, lifts[0].isOpen());
-        Assert.assertEquals("Lift in SUT is moving",true, lifts[0].isMoving());
+        Assert.assertEquals("Lift Open door in SUT  does not match lift used", false, lifts[0].isOpen());
+        Assert.assertEquals("Lift Moving  in SUT  does not match lift used", true, lifts[0].isMoving());
     }
 
-    public @Action void unguardedAction() throws InterruptedException {
-           System.out.println("current time "+now);
+    public @Action
+    void unguardedAction() throws InterruptedException {
+        System.out.println("current time " + now);
         TimeUnit.SECONDS.sleep((getNextTimeIncrement(new Random())));
 
 
@@ -246,7 +241,7 @@ public class SingleLiftModelTest implements TimedFsmModel {
     private void deleteRequest(Lift lift) {
 
         ServiceList serviceListEntry;
-        ServiceList currentEntry = new ServiceList(lift, lift.getFloor());
+        ServiceList currentEntry = new ServiceList(lift, lifts[0].getFloor());
 
         if (!serviceList.isEmpty()) {
             for (int i = 0; i < serviceList.size(); i++) {
@@ -261,7 +256,7 @@ public class SingleLiftModelTest implements TimedFsmModel {
 
     private void createNewRequest(Lift lift, int floor) {
 
-       // boolean serviceEntryPresent = false;
+        // boolean serviceEntryPresent = false;
 
         ServiceList newEntry = new ServiceList(lift, floor);
 
@@ -276,7 +271,7 @@ public class SingleLiftModelTest implements TimedFsmModel {
         }
     }
 
-    private  boolean findServiceListEntry(ServiceList newEntry){
+    private boolean findServiceListEntry(ServiceList newEntry) {
         boolean serviceEntryPresent = false;
         ServiceList serviceListEntry;
         for (int i = 0; i < serviceList.size(); i++) {
@@ -288,7 +283,7 @@ public class SingleLiftModelTest implements TimedFsmModel {
             }
         }
 
-        return  serviceEntryPresent;
+        return serviceEntryPresent;
 
     }
 
@@ -302,15 +297,19 @@ public class SingleLiftModelTest implements TimedFsmModel {
 
 
         //   final Tester tester  = new RandomTester(myModel);
-        tester.setRandom(new Random());
+        tester.setRandom(new Random(100));
         final GraphListener graphListener = tester.buildGraph();
+        //  graphListener.printGraphDot("/users/Owner/Desktop/output.dot");
         tester.addListener(new StopOnFailureListener());
         tester.addListener("verbose");
         tester.addCoverageMetric(new TransitionPairCoverage());
+        tester.addCoverageMetric(new TransitionCoverage());
         tester.addCoverageMetric(new StateCoverage());
         tester.addCoverageMetric(new ActionCoverage());
 
         tester.generate(500);
         tester.printCoverage();
+
+
     }
 }

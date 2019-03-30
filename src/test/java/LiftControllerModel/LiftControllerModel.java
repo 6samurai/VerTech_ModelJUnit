@@ -8,45 +8,59 @@ import LiftModel_DOES_NOT_WORK.ServiceList;
 import com.liftmania.Lift;
 import com.liftmania.LiftController;
 import junit.framework.Assert;
-import nz.ac.waikato.modeljunit.*;
+import nz.ac.waikato.modeljunit.Action;
+import nz.ac.waikato.modeljunit.GraphListener;
+import nz.ac.waikato.modeljunit.GreedyTester;
+import nz.ac.waikato.modeljunit.StopOnFailureListener;
 import nz.ac.waikato.modeljunit.coverage.ActionCoverage;
 import nz.ac.waikato.modeljunit.coverage.StateCoverage;
+import nz.ac.waikato.modeljunit.coverage.TransitionCoverage;
 import nz.ac.waikato.modeljunit.coverage.TransitionPairCoverage;
+import nz.ac.waikato.modeljunit.timing.Time;
+import nz.ac.waikato.modeljunit.timing.TimedFsmModel;
+import nz.ac.waikato.modeljunit.timing.TimedModel;
 import org.junit.Test;
+
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 
-public class LiftControllerModel implements FsmModel {
-    private Random random = new Random();
+public class LiftControllerModel implements TimedFsmModel {
+    private static final int PROBABILITY_TOTAL = 100;
+    private static final int PROBABILITY_CALL_LIFT = 20;
+    @Time
+    public int now;
     int numFloors = 0;
     int numLifts = 0;
-
-    private static final int PROBABILITY_TOTAL = 100;
-    private static final int PROBABILITY_CALL_LIFT = 20;;
-
-    Lift lift;
-    Lift[] lifts;
-    ArrayList<LiftObject> liftObjects;
-    ArrayList<Lift> listOfLifts;
-    LiftController sut;
-    MultipleLiftOperator multipleLiftOperator ;
-    ArrayList<ServiceList> serviceList;
+    private Random random = new Random();
+    private Lift lift;
+    private Lift[] lifts;
+    private ArrayList<LiftObject> liftStates;
+    private ArrayList<Lift> listOfLifts;
+    private LiftController sut;
+    private MultipleLiftOperator multipleLiftOperator;
+    private ArrayList<ServiceList> serviceList;
     private LiftControllerStates modelState = LiftControllerStates.IDLE;
+    private int liftCounter = 0;
+    private int currentTimeSlot;
+    private int counter;
+    private boolean check;
 
     //Method implementations
     public LiftControllerStates getState() {
         return modelState;
     }
 
+
     public void reset(final boolean reset) {
         modelState = LiftControllerStates.IDLE;
 
         if (reset) {
 
-            numFloors = random.nextInt(10)+1;
-            numLifts= random.nextInt(10)+1;
+            numFloors = random.nextInt(10) + 1;
+            numLifts = random.nextInt(10) + 1;
 
             sut = new LiftController(numFloors, numLifts, false);
 
@@ -55,19 +69,172 @@ public class LiftControllerModel implements FsmModel {
             lifts = sut.getLifts();
 
             serviceList = new ArrayList<ServiceList>();
-            liftObjects = new ArrayList<LiftObject>();
+            liftStates = new ArrayList<LiftObject>();
             listOfLifts = new ArrayList<Lift>();
-
-            for(int i =0; i <numLifts;i++){
-                liftObjects.add(new LiftObject());
+            liftCounter = 0;
+            now = 0;
+            currentTimeSlot = 0;
+            counter = 0;
+            check = false;
+            for (int i = 0; i < numLifts; i++) {
+                liftStates.add(new LiftObject());
             }
 
         }
 
     }
 
+    @Override
+    public int getNextTimeIncrement(Random random) {
+        return 1;
+    }
 
-    public boolean getButtonPressGuard() {
+
+    public boolean verifyBehaviourGuard() {
+
+        return getState().equals(LiftControllerStates.SERVICING) && now % numLifts == numLifts;
+    }
+
+    //idle to servicing states through callLiftToFloor
+    public @Action
+    void verifyBehaviour() {
+        check = false;
+        //to check if all of the call requests have been serviced
+        modelState = LiftControllerStates.VERIFY;
+
+
+        if(serviceList.size()==0 && checkIfLiftsAreClosed())
+        for (int i = 0; i < liftStates.size(); i++) {
+
+            //if all lifts are closed and stationary with items still required to be serviced - lift is invalid behaviour
+            if (liftStates.get(i).getLiftState().equals(LiftState.CLOSED) && serviceList.size() == 0) {
+                check = true;
+                break;
+            }
+
+        }
+
+
+        Assert.assertEquals("Expecting lift system to still be servicing requests ", false, check);
+
+    }
+
+
+    public boolean finalizeBehaviourGuard() {
+        return getState().equals(LiftControllerStates.VERIFY) && now % (numLifts+1) == numLifts;
+    }
+
+    //idle to servicing states through callLiftToFloor
+    public @Action
+    void finalizeBehaviour() {
+
+
+        if (serviceList.size() > 0) {
+            modelState = LiftControllerStates.SERVICING;
+
+        } else {
+            modelState = LiftControllerStates.IDLE;
+        }
+        Assert.assertEquals("Expecting lift system to still be servicing requests ", true, check);
+
+    }
+
+    public boolean idleGuard() {
+        boolean checkEmpty = true;
+        for (int i = 0; i < liftStates.size(); i++) {
+            if (!liftStates.get(i).getLiftState().equals(LiftState.CLOSED)) {
+                checkEmpty = false;
+                break;
+            }
+        }
+
+        return (getState().equals(LiftControllerStates.IDLE) || getState().equals(LiftControllerStates.VERIFY)) && serviceList.size() == 0 && checkEmpty;
+    }
+
+    //idle to servicing states through callLiftToFloor
+    public @Action
+    void idle() {
+        modelState = LiftControllerStates.IDLE;
+        Assert.assertEquals("Service lift is not empty ", 0, serviceList.size());
+
+    }
+
+
+    public @Action
+    void unguardedAction() throws InterruptedException {
+        System.out.println("now time " + now);
+        //System.out.println("current time "+currentTimeSlot);
+        TimeUnit.MILLISECONDS.sleep((getNextTimeIncrement(new Random())) / 2);
+    }
+
+
+
+
+    @Test
+    public void LiftSystemModelRunner() throws FileNotFoundException {
+
+        final TimedModel timedModel = new TimedModel(new LiftControllerModel());
+        //    timedModel.setTimeoutProbability(0.5);
+
+        final GreedyTester tester = new GreedyTester(timedModel);
+        tester.setRandom(new Random());
+        tester.setResetProbability(0.001);
+        final GraphListener graphListener = tester.buildGraph();
+        //    graphListener.printGraphDot("/users/Owner/Desktop/output.dot");
+        tester.addListener(new StopOnFailureListener());
+        tester.addListener("verbose");
+        tester.addCoverageMetric(new TransitionPairCoverage());
+        tester.addCoverageMetric(new TransitionCoverage());
+        tester.addCoverageMetric(new StateCoverage());
+        tester.addCoverageMetric(new ActionCoverage());
+        tester.generate(500);
+        tester.printCoverage();
+    }
+
+
+    boolean checkIfLiftsAreClosed(){
+        check = true;
+        for (int i = 0; i < liftStates.size(); i++) {
+
+           if (!liftStates.get(i).getLiftState().equals(LiftState.CLOSED)) {
+                check = false;
+                break;
+            }
+
+        }
+        return  check;
+    }
+
+    private void createNewRequest(Lift lift, int floor) {
+        ServiceList serviceListEntry;
+        boolean serviceEntryPresent = false;
+
+        ServiceList newEntry = new ServiceList(lift, floor);
+
+        if (serviceList.isEmpty()) {
+            serviceList.add(newEntry);
+
+        } else {
+
+            for (int i = 0; i < serviceList.size(); i++) {
+                serviceListEntry = serviceList.get(i);
+
+                if ((serviceListEntry.getLift() == newEntry.getLift() && serviceListEntry.getFloor() == newEntry.getFloor())) {
+                    serviceEntryPresent = true;
+                    break;
+                }
+            }
+
+            if (!serviceEntryPresent) {
+                serviceList.add(newEntry);
+            }
+        }
+    }
+
+
+
+
+  /*  public boolean getButtonPressGuard() {
         return getState().equals(LiftControllerStates.IDLE)  ;
     }
 
@@ -98,7 +265,7 @@ public class LiftControllerModel implements FsmModel {
         lift = multipleLiftOperator.getClosestLift(listOfLifts);
 
         createNewRequest(lift, randomFloorCall);
-        liftObjects.get(lift.getId()).setLiftState(LiftState.BUTTON_PRESS);
+        liftStates.get(lift.getId()).setLiftState(LiftState.LIFT_CALL);
 
     }
 
@@ -114,20 +281,17 @@ public class LiftControllerModel implements FsmModel {
     void systemAction() {
 
 
-        for(int i = 0; i < liftObjects.size();i++){
-            if(!liftObjects.get(i).getLiftState().equals(LiftState.CLOSED)){
+        for(int i = 0; i < liftStates.size();i++){
+            if(!liftStates.get(i).getLiftState().equals(LiftState.CLOSED)){
 
-             /*   if(ThreadLocalRandom.current().nextInt(PROBABILITY_TOTAL) < PROBABILITY_CALL_LIFT){
 
-                }*/
+             if(liftStates.get(i).getLiftState().equals(LiftState.LIFT_CALL)){
 
-             if(liftObjects.get(i).getLiftState().equals(LiftState.BUTTON_PRESS)){
-
-             } else if(liftObjects.get(i).getLiftState().equals(LiftState.OPEN)){
+             } else if(liftStates.get(i).getLiftState().equals(LiftState.OPEN)){
 
 
 
-             }else if(liftObjects.get(i).getLiftState().equals(LiftState.MOVING)){
+             }else if(liftStates.get(i).getLiftState().equals(LiftState.MOVING)){
 
              }
             }
@@ -138,69 +302,5 @@ public class LiftControllerModel implements FsmModel {
         Assert.assertEquals("Service lift is not empty " ,0, serviceList.size());
 
     }
-
-
-    public boolean idleGuard() {
-        boolean   checkEmpty = true;
-        for(int i =0;i< liftObjects.size();i++){
-            if(!liftObjects.get(i).getLiftState().equals(LiftState.CLOSED)){
-                checkEmpty = false;
-                break;
-            }
-        }
-
-        return  getState().equals(LiftControllerStates.SERVICING) && serviceList.size()==0 && checkEmpty;
-    }
-
-    //idle to servicing states through callLiftToFloor
-    public @Action
-    void idle() {
-        modelState = LiftControllerStates.IDLE;
-        Assert.assertEquals("Service lift is not empty " ,0, serviceList.size());
-
-    }
-
-
-    private void createNewRequest(Lift lift, int floor) {
-        ServiceList serviceListEntry;
-        boolean serviceEntryPresent = false;
-
-        ServiceList newEntry = new ServiceList(lift, floor);
-
-        if (serviceList.isEmpty()) {
-            serviceList.add(newEntry);
-
-        } else {
-
-            for (int i = 0; i < serviceList.size(); i++) {
-                serviceListEntry = serviceList.get(i);
-
-                if ((serviceListEntry.getLift() == newEntry.getLift() && serviceListEntry.getFloor() == newEntry.getFloor())) {
-                    serviceEntryPresent = true;
-                    break;
-                }
-            }
-
-            if (!serviceEntryPresent) {
-                serviceList.add(newEntry);
-            }
-        }
-    }
-
-    @Test
-    public void LiftSystemModelRunner() throws FileNotFoundException {
-        MultipleLiftsModel_OLD_VERSION.MultipleLiftsModelTest myModel = new MultipleLiftsModel_OLD_VERSION.MultipleLiftsModelTest();
-
-        final Tester tester = new GreedyTester(myModel);
-        tester.setRandom(new Random());
-        final GraphListener graphListener = tester.buildGraph();
-        tester.addListener(new StopOnFailureListener());
-        tester.addListener("verbose");
-        tester.addCoverageMetric(new TransitionPairCoverage());
-        tester.addCoverageMetric(new StateCoverage());
-        tester.addCoverageMetric(new ActionCoverage());
-
-        tester.generate(500);
-        tester.printCoverage();
-    }
+*/
 }
