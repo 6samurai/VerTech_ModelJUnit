@@ -5,6 +5,7 @@ public class LiftObject {
     int currentFloor = 0;
     boolean doorOpen = false;
     boolean moving = false;
+    boolean movingUp = true;
     int destinationFloor = -1;
     double moveTimer = 0;
     double doorOpenTimer = 0;
@@ -26,6 +27,10 @@ public class LiftObject {
         this.moving = moving;
     }
 
+    public void setMovingUp(boolean movingUp){
+        this.movingUp = movingUp;
+    }
+
     public void setDestinationFloor(int destinationFloor){
         this.destinationFloor = destinationFloor;
     }
@@ -45,27 +50,31 @@ public class LiftObject {
 
 
 
-    public int setCurrentFloor( ){
+    public int getCurrentFloor( ){
         return this.currentFloor ;
     }
 
-    public boolean setDoorOpen(){
+    public boolean getDoorOpen(){
         return this.doorOpen;
     }
 
-    public boolean setMoving( ){
+    public boolean getMoving( ){
         return this.moving;
     }
 
-    public int setDestinationFloor( ){
+    public boolean getMovingUp( ){
+        return this.movingUp;
+    }
+
+    public int getDestinationFloor( ){
         return this.destinationFloor ;
     }
 
-    public double setMoveTimer( ){
+    public double getMoveTimer( ){
         return this.moveTimer;
     }
 
-    public double setDoorOpenTimer(){
+    public double getDoorOpenTimer(){
         return this.doorOpenTimer;
     }
 

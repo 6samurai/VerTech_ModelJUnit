@@ -45,8 +45,9 @@ public class LiftControllerModel implements TimedFsmModel {
     private LiftControllerStates modelState = LiftControllerStates.IDLE;
     private int liftCounter = 0;
     private int currentTimeSlot;
-    private int counter;
+    private int currentLiftID;
     private boolean check;
+    private int temp = 0;
 
     //Method implementations
     public LiftControllerStates getState() {
@@ -74,7 +75,7 @@ public class LiftControllerModel implements TimedFsmModel {
             liftCounter = 0;
             now = 0;
             currentTimeSlot = 0;
-            counter = 0;
+            currentLiftID = 0;
             check = false;
             for (int i = 0; i < numLifts; i++) {
                 liftStates.add(new LiftObject());
@@ -125,8 +126,72 @@ public class LiftControllerModel implements TimedFsmModel {
     }
 
 
+    public boolean liftCallGuard() {
+        return (getState().equals(LiftControllerStates.IDLE) || getState().equals(LiftControllerStates.SERVICING) );
+    }
+
+    //idle to servicing states through callLiftToFloor
+    public @Action
+    void liftCall() {
+
+    }
+
+    public boolean moveGuard() {
+        currentLiftID = now % numLifts;
+
+        if( (liftStates.get(currentLiftID).getLiftState().equals(LiftState.MOVING) ||  (liftStates.get(currentLiftID).getLiftState().equals(LiftState.CLOSED) ) ||
+                liftStates.get(currentLiftID).getLiftState().equals(LiftState.LIFT_CALL))  && liftStates.get(currentLiftID).getDestinationFloor() != -1)
+        return getState().equals(LiftControllerStates.SERVICING);
+
+        return  false;
+    }
+
+    //idle to servicing states through callLiftToFloor
+    public @Action
+    void move() {
+        modelState = LiftControllerStates.SERVICING;
+        liftStates.get(currentLiftID).setLiftState(LiftState.MOVING);
+        liftStates.get(currentLiftID).setMoving(true);
+
+        //ADD TIMER (TO BE TESTED) FOR NOW CONSIDER WITHOUT TIMER
+
+        temp = liftStates.get(currentLiftID).getCurrentFloor();
+        if(liftStates.get(currentLiftID).getMovingUp()){
+
+
+            sut.moveLift(currentLiftID,   temp+1);
+            liftStates.get(currentLiftID).setCurrentFloor(temp+1);
+        } else{
+            sut.moveLift(currentLiftID,   temp-1);
+            liftStates.get(currentLiftID).setCurrentFloor(temp-1);
+        }
+
+
+    }
+
+    public boolean openDoorGuard() {
+        return getState().equals(LiftControllerStates.SERVICING);
+    }
+
+    //idle to servicing states through callLiftToFloor
+    public @Action
+    void openDoor() {
+
+    }
+
+    public boolean closeDoorGuard() {
+        return getState().equals(LiftControllerStates.SERVICING) ;
+    }
+
+    //idle to servicing states through callLiftToFloor
+    public @Action
+    void closeDoor() {
+
+    }
+
+
     public boolean finalizeBehaviourGuard() {
-        return getState().equals(LiftControllerStates.VERIFY) && now % (numLifts+1) == numLifts;
+        return getState().equals(LiftControllerStates.VERIFY) && now % (numLifts+1) == numLifts+1;
     }
 
     //idle to servicing states through callLiftToFloor
