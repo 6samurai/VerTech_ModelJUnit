@@ -129,7 +129,8 @@ public class SingleLiftModelTest implements TimedFsmModel {
         boolean validTime = false;
         closeDoorCarriedOut = true;
         openDoorCarriedOut = false;
-        if (modelState.equals(SingleLiftOperatorStates.OPEN)) {
+        lifts = sut.getLifts();
+        if (lifts[0].isOpen()) {
             deleteRequest(lifts[0]);
         }
 
@@ -154,7 +155,7 @@ public class SingleLiftModelTest implements TimedFsmModel {
         Assert.assertEquals("Timer to get to close door expired", true,validTime);
         Assert.assertEquals("Lift Open door in SUT  does not match lift used", false, lifts[0].isOpen());
         Assert.assertEquals("Lift Moving  in SUT  does not match lift used", false, lifts[0].isMoving());
-
+        Assert.assertEquals("Lift between floors  in SUT  does not match lift used", false, lifts[0].getBetweenFloors());
 
     }
 
@@ -185,6 +186,7 @@ public class SingleLiftModelTest implements TimedFsmModel {
         closeDoorTime = now;
         Assert.assertEquals("Lift Open door in SUT  does not match lift used", true, lifts[0].isOpen());
         Assert.assertEquals("Lift Moving  in SUT  does not match lift used", false, lifts[0].isMoving());
+        Assert.assertEquals("Lift between floors  in SUT  does not match lift used", false, lifts[0].getBetweenFloors());
     }
 
 
@@ -295,7 +297,19 @@ public class SingleLiftModelTest implements TimedFsmModel {
         } else {
 
             if (!findServiceListEntry(newEntry)) {
-                serviceList.add(newEntry);
+                int distanceNewRequest = lift.distanceFromFloor(floor);
+                int distanceCurrentRequest = lift.distanceFromFloor(serviceList.get(0).getFloor());
+                boolean liftMovingUp = lift.getIsMovingUp();
+
+                if((liftMovingUp && distanceNewRequest>0 && distanceCurrentRequest>0 && distanceCurrentRequest> distanceNewRequest)||
+                        (!liftMovingUp && distanceNewRequest<0 && distanceCurrentRequest<0 && distanceCurrentRequest> distanceNewRequest) ){
+
+                    ServiceList tempEntry =  serviceList.get(0);
+                    serviceList.set(0,newEntry);
+                    serviceList.add(tempEntry);
+
+                } else
+                    serviceList.add(newEntry);
             }
         }
     }

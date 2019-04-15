@@ -8,6 +8,18 @@ public class Lift {
 	boolean doorsOpen = false;
 	boolean moveUp =true;//false implies that lift is moving downward
 
+
+	boolean betweenFloors = false;
+
+
+	public boolean getBetweenFloors(){
+		return betweenFloors;
+	}
+
+	public void setBetweenFloors(boolean betweenFloors){
+		this.betweenFloors = betweenFloors;
+	}
+
 	public int getId() {
 		return id;
 	}

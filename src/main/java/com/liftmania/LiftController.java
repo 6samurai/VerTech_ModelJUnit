@@ -58,6 +58,7 @@ public class LiftController {
 		}
 
 		lifts[lift.id].setIsMovingUp(moveUp);
+        lifts[lift.id].setMoving(true);
 		//The animation process is trusted with updating the state of the lift (floorNumber, moving, etc)
 		visualiser.animateLiftMovement(lift, floorNumber);
 	}
@@ -89,6 +90,7 @@ public class LiftController {
 	public void openLiftDoor(int liftNumber, int floor) {
 		Lift lift = lifts[liftNumber];
 		lift.openDoors();
+		lift.setMoving(false);
 		visualiser.animateLiftOpen(lift, floor);
 		/*visualiser.addAnimationCommand(new AnimationCommand(
 				AnimationCommand.Command.open, liftNumber, lift.getFloor(), -1));*/

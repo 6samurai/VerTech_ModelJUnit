@@ -159,7 +159,7 @@ public class Shaft extends JPanel implements Runnable {
 
 		int fromFloor = lift.getFloor();
 		setLiftFloor(fromFloor);
-		lift.setMoving(true);
+		//lift.setMoving(true);
 
 		if (toFloor > fromFloor) {
 
@@ -168,6 +168,7 @@ public class Shaft extends JPanel implements Runnable {
 				animateUp(i);
 				newFloor = i + 1;
 				lift.setFloor(newFloor);
+				lift.setBetweenFloors(false);
 			}
 
 		} else {
@@ -177,6 +178,7 @@ public class Shaft extends JPanel implements Runnable {
 				animateDown(i);
 				newFloor = i - 1;
 				lift.setFloor(newFloor);
+				lift.setBetweenFloors(false);
 			}
 
 		}
@@ -203,6 +205,7 @@ public class Shaft extends JPanel implements Runnable {
 
 		for (int i = 0; i < animationStepsPerFloor; i++) {
 			animationPause();
+			lift.setBetweenFloors(true);
 			lower++;
 			upper++;
 
@@ -220,6 +223,7 @@ public class Shaft extends JPanel implements Runnable {
 
 		for (int i = 0; i < animationStepsPerFloor; i++) {
 			animationPause();
+			lift.setBetweenFloors(true);
 			lower--;
 			upper--;
 
@@ -272,10 +276,11 @@ public class Shaft extends JPanel implements Runnable {
 	 *            - The lift number (zero-based)
 	 */
 	public void closeDoors(int floor) {
+		lift.setMoving(false);
 		liftColor = COLOR_DOORS_CLOSED;
 		setLiftFloor(lift.getFloor());
 		visualiser.controller.closeLiftDoor(lift.getId(), floor);
-		lift.setMoving(false);
+
 		try {
 			Thread.sleep(500);
 		} catch (Exception e) {}
