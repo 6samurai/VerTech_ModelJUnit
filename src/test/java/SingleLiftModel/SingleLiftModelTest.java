@@ -90,26 +90,14 @@ public class SingleLiftModelTest implements TimedFsmModel {
             closeDoorTime = now;
         }
 
-
         modelState = SingleLiftOperatorStates.LIFT_CALL;
         firstOperation = false;
         int randomFloorCall = random.nextInt(numFloors);
 
-       // ArrayList<Lift> sutListOfLifts = sut.getClosestLifts(randomFloorCall);
-
         listOfLifts = multipleLiftOperator.getClosestLifts(lifts, randomFloorCall);
         lifts = sut.getLifts();
 
-    //     if (listOfLifts.size() <= 1)
-            Assert.assertEquals("Lift in SUT matches lift used", sut.getLifts()[lifts[0].getId()], lifts[0]);
-      /*  else {
-            for (int i = 0; i < listOfLifts.size(); i++) {
-                if (sutListOfLifts.get(i).getId() == listOfLifts.get(i).getId()) {
-                    check++;
-                }
-            }
-            Assert.assertEquals("Lift in SUT matches lift used: " + check + "list of Lifts size: " + listOfLifts.size() + " sut lift size:" + sutListOfLifts.size(), check, listOfLifts.size());
-        }*/
+        Assert.assertEquals("Lift in SUT matches lift used", sut.getLifts()[lifts[0].getId()], lifts[0]);
 
         createNewRequest(lifts[0], randomFloorCall);
 
@@ -142,15 +130,13 @@ public class SingleLiftModelTest implements TimedFsmModel {
 
         sut.closeLiftDoor(lifts[0].getId(), lifts[0].getFloor());
 
-    //    multipleLiftOperator.closeLiftDoor(lifts[0]);
-        lifts = sut.getLifts();
-        moveLiftTime = now;
-
 
         try {
-                Thread.sleep(500 + 250 + 50);
-            } catch (Exception e) {
+            Thread.sleep(500 + 250 + 50);
+        } catch (Exception e) {
         }
+        lifts = sut.getLifts();
+        moveLiftTime = now;
 
         Assert.assertEquals("Timer to get to close door expired", true,validTime);
         Assert.assertEquals("Lift Open door in SUT  does not match lift used", false, lifts[0].isOpen());
@@ -176,7 +162,6 @@ public class SingleLiftModelTest implements TimedFsmModel {
         modelState = SingleLiftOperatorStates.OPEN;
 
         sut.openLiftDoor(lifts[0].getId(), lifts[0].getFloor());
-   //     multipleLiftOperator.openLiftDoor(lifts[0]);
 
         try {
             Thread.sleep(50 + 250 + 3000);
@@ -193,8 +178,8 @@ public class SingleLiftModelTest implements TimedFsmModel {
     public boolean moveLiftGuard() {
         boolean validTimer = false;
         ServiceList currentEntry = new ServiceList(lifts[0], lifts[0].getFloor());
-        return (getState().equals(SingleLiftOperatorStates.LIFT_CALL) || getState().equals(SingleLiftOperatorStates.CLOSED) || getState().equals(SingleLiftOperatorStates.MOVE) ) && serviceList.size() > 0 && !lifts[0].isOpen() && !findServiceListEntry(currentEntry) ;
-
+        return (getState().equals(SingleLiftOperatorStates.LIFT_CALL) || getState().equals(SingleLiftOperatorStates.CLOSED) || getState().equals(SingleLiftOperatorStates.MOVE) )
+                && serviceList.size() > 0 && !lifts[0].isOpen() && !findServiceListEntry(currentEntry) ;
     }
 
     public @Action
@@ -206,48 +191,15 @@ public class SingleLiftModelTest implements TimedFsmModel {
                 validTimer = true;
 
             Assert.assertEquals("Move time limit exceeded " + now + " moveLiftTimer " + moveLiftTime, true, validTimer);
-
         }
 
         modelState = SingleLiftOperatorStates.MOVE;
-
-    /*    int closestFloor = numFloors;
-        int floorDifference = 0;
-        int serviceId;
-        for (int i = 0; i < serviceList.size(); i++) {
-            if (!lifts[0].isMoving()) {
-                floorDifference = Math.abs(lifts[0].distanceFromFloor(serviceList.get(i).getFloor())) - lifts[0].getFloor();
-                if (floorDifference < closestFloor) {
-                    closestFloor = serviceList.get(i).getFloor();
-                    serviceId = i;
-                }
-            } else if ((lifts[0].distanceFromFloor(serviceList.get(i).getFloor()) < closestFloor && !lifts[0].getIsMovingUp()) ||
-                    (lifts[0].distanceFromFloor(serviceList.get(i).getFloor()) * -1 < closestFloor && lifts[0].getIsMovingUp())) {
-                closestFloor = serviceList.get(i).getFloor();
-                serviceId = i;
-
-            }
-
-
-        }
-           sut.moveLift(lifts[0], closestFloor);
-        */
 
         if(serviceList.get(0).getFloor() - lifts[0].getFloor() > 0){
             sut.moveLift(lifts[0], lifts[0].getFloor()+1);
         } else{
             sut.moveLift(lifts[0], lifts[0].getFloor()-1);
         }
-
-     /*   if(lifts[0].getIsMovingUp()){
-            sut.moveLift(lifts[0], lifts[0].getFloor()+1);
-        } else{
-            sut.moveLift(lifts[0], lifts[0].getFloor()-1);
-        }*/
-
-
-
-   //     multipleLiftOperator.moveLift(lifts[0], closestFloor);
 
         try {
             Thread.sleep(50 + 250);
@@ -286,8 +238,6 @@ public class SingleLiftModelTest implements TimedFsmModel {
     }
 
     private void createNewRequest(Lift lift, int floor) {
-
-        // boolean serviceEntryPresent = false;
 
         ServiceList newEntry = new ServiceList(lift, floor);
 
@@ -334,15 +284,15 @@ public class SingleLiftModelTest implements TimedFsmModel {
     public void LiftSystemModelRunner() throws FileNotFoundException {
 
         final TimedModel myModel = new TimedModel(new SingleLiftModelTest());
-        final Tester tester = new GreedyTester(myModel);
-        //    final Tester tester = new LookaheadTester(myModel);
-        //    ((LookaheadTester) tester).setDepth(3);
+      //  final Tester tester = new GreedyTester(myModel);
+            final Tester tester = new LookaheadTester(myModel);
+            ((LookaheadTester) tester).setDepth(4);
 
 
         //   final Tester tester  = new RandomTester(myModel);
-        tester.setRandom(new Random(100));
+        tester.setRandom(new Random());
         final GraphListener graphListener = tester.buildGraph();
-        //  graphListener.printGraphDot("/users/Owner/Desktop/output.dot");
+        graphListener.printGraphDot("/users/Owner/Desktop/output.dot");
         tester.addListener(new StopOnFailureListener());
         tester.addListener("verbose");
         tester.addCoverageMetric(new TransitionPairCoverage());
@@ -352,7 +302,6 @@ public class SingleLiftModelTest implements TimedFsmModel {
 
         tester.generate(500);
         tester.printCoverage();
-
 
     }
 }

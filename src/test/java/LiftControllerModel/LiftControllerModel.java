@@ -28,7 +28,7 @@ import java.util.concurrent.TimeUnit;
 
 
 public class LiftControllerModel implements TimedFsmModel {
-    private static int callLift = 1;
+    private static int callLift = 10;
     private static int probTotal = 100;
     @Time
     public int now;
@@ -62,11 +62,11 @@ public class LiftControllerModel implements TimedFsmModel {
         idOffset = 0;
         if (reset) {
             //assuming range of floors is between 0 and random max number
-     //      numFloors = random.nextInt(10) + 2;
-      //     numLifts = random.nextInt(10) + 2;
+           numFloors = random.nextInt(10) + 3;
+           numLifts = random.nextInt(10) + 3;
 
-            numFloors = 2;
-            numLifts = 2;
+          //  numFloors = 2;
+           // numLifts = 2;
 
             sut = new LiftController(numFloors, numLifts, false);
 
@@ -108,7 +108,7 @@ public class LiftControllerModel implements TimedFsmModel {
     //idle to servicing states through callLiftToFloor
     public @Action
     void verifyBehaviour() {
-        System.out.println("in veify");
+        System.out.println("in verify");
         check = false;
         boolean overFloorLimits = false;
         //to check if all of the call requests have been serviced
@@ -136,7 +136,7 @@ public class LiftControllerModel implements TimedFsmModel {
         }*/
 
         Assert.assertEquals("Expecting lift system to still be servicing requests ", false, check);
-        Assert.assertEquals("Exceeded height limits ", false, overFloorLimits);
+        Assert.assertEquals("Exceeded height limits "  + liftStates.get(0).allVarianbles() + liftStates.get(1).allVarianbles(), false, overFloorLimits);
     }
 
     public boolean liftCallGuard() {
@@ -147,7 +147,7 @@ public class LiftControllerModel implements TimedFsmModel {
     //idle to servicing states through callLiftToFloor
     public @Action
     void liftCall() {
-        System.out.println("in lift call");
+
         int counter = 0;
 
         modelState = LiftControllerStates.SERVICING;
@@ -179,48 +179,57 @@ public class LiftControllerModel implements TimedFsmModel {
             Assert.assertEquals("Lift in SUT matches lift used: ", counter, buttonPressLists.size());
         }
 
+        System.out.println("in lift call before " + liftStates.get(0).allVarianbles() + liftStates.get(1).allVarianbles());
+
         counter =random.nextInt(buttonPressLists.size());
         createNewRequest(buttonPressLists.get(counter), randomFloorCall);
+        //current lift
+        int tempID = buttonPressLists.get(counter).getId();
+        LiftObject tempObject =  liftStates.get(tempID);
+        System.out.println("temp object "+ counter +"\n" + tempObject.allVarianbles() );
 
-        LiftObject tempObject =  liftStates.get(counter);
+        //if current lift does not have destination floor
         if(  tempObject.getDestinationFloor() == -1){
 
-            liftStates.get(counter).setDestinationFloor(randomFloorCall);
-
+            liftStates.get(tempID).setDestinationFloor(randomFloorCall);
+            //set direction of lift
             if(  tempObject.getCurrentFloor()>randomFloorCall)
-                liftStates.get(counter).setMovingUp(false);
+                liftStates.get(tempID).setMovingUp(false);
             else
-                liftStates.get(counter).setMovingUp(true);
+                liftStates.get(tempID).setMovingUp(true);
         } else {
+            //if current floor of lift = input received
             if(tempObject.getCurrentFloor() == randomFloorCall){
-                liftStates.get(counter).setDestinationFloor(randomFloorCall);
+                liftStates.get(tempID).setDestinationFloor(randomFloorCall);
             } else{
                 int currentDistance =   tempObject.getDestinationFloor() - tempObject.getCurrentFloor();
                 int tempDistance =  randomFloorCall - tempObject.getCurrentFloor();
+                //checks if current servicing direction of lift is the same as new request
                 if(tempObject.getMovingUp() ){
 
                     if( tempDistance>0 && tempDistance<currentDistance)
-                        liftStates.get(counter).setDestinationFloor(randomFloorCall);
+                        liftStates.get(tempID).setDestinationFloor(randomFloorCall);
 
                 } else{
-                    if( tempDistance<0 && tempDistance>currentDistance)
-                        liftStates.get(counter).setDestinationFloor(randomFloorCall);
+                    if( tempDistance<0 && tempDistance>currentDistance )
+                        liftStates.get(tempID).setDestinationFloor(randomFloorCall);
 
                 }
-
             }
-            if( (liftStates.get(counter).getDestinationFloor() -  liftStates.get(counter).getCurrentFloor()> counter && liftStates.get(counter).getMovingUp() )||
+
+
+     /*       if( (liftStates.get(counter).getDestinationFloor() -  liftStates.get(counter).getCurrentFloor()> counter && liftStates.get(counter).getMovingUp() )||
                     (liftStates.get(counter).getDestinationFloor()< counter && !liftStates.get(counter).getMovingUp())
              )
             {
 
-            }
+            }*/
 
         }
 
+        System.out.println("in lift call" + liftStates.get(0).allVarianbles() + liftStates.get(1).allVarianbles());
 
-
-        liftStates.get(counter).setLiftState(LiftState.LIFT_CALL);
+        liftStates.get(tempID).setLiftState(LiftState.LIFT_CALL);
 
     }
 
@@ -230,16 +239,23 @@ public class LiftControllerModel implements TimedFsmModel {
         currentLiftID = (now-idOffset) % ( numLifts +2);
 
         if(currentLiftID<numLifts)
-        if (
-                (liftStates.get(currentLiftID).getLiftState().equals(LiftState.LIFT_CALL) ||
-                        (
-                                (liftStates.get(currentLiftID).getLiftState().equals(LiftState.MOVING) || liftStates.get(currentLiftID).getLiftState().equals(LiftState.CLOSED))
-                                        && (now - liftStates.get(currentLiftID).getTimer()>4)
-                        )
-                )
-                && liftStates.get(currentLiftID).getDestinationFloor() != -1
-                && liftStates.get(currentLiftID).getDestinationFloor() != lifts[currentLiftID].getFloor())
-            return getState().equals(LiftControllerStates.SERVICING);
+            if (
+                    (liftStates.get(currentLiftID).getLiftState().equals(LiftState.LIFT_CALL) ||
+                            (
+                                    (liftStates.get(currentLiftID).getLiftState().equals(LiftState.MOVING)) ||
+                                            (liftStates.get(currentLiftID).getLiftState().equals(LiftState.CLOSED) && (now - liftStates.get(currentLiftID).getTimer()>4))
+                            )
+                    )
+                    && liftStates.get(currentLiftID).getDestinationFloor() != -1
+                    && liftStates.get(currentLiftID).getDestinationFloor() != liftStates.get(currentLiftID).getCurrentFloor() && !liftStates.get(currentLiftID).getDoorOpen() && !lifts[currentLiftID].isOpen()
+
+                    && serviceList.size()>0){
+
+             //   System.out.println("currentLiftID" + currentLiftID);
+                return getState().equals(LiftControllerStates.SERVICING);
+            }
+
+
 
         return false;
     }
@@ -247,12 +263,10 @@ public class LiftControllerModel implements TimedFsmModel {
     //idle to servicing states through callLiftToFloor
     public @Action
     void move() {
-        System.out.println("in move");
+       // System.out.println("in move of id "+currentLiftID+ " " +  liftStates.get(0).allVarianbles() + liftStates.get(1).allVarianbles());
         modelState = LiftControllerStates.SERVICING;
         liftStates.get(currentLiftID).setLiftState(LiftState.MOVING);
         liftStates.get(currentLiftID).setMoving(true);
-
-        //ADD TIMER (TO BE TESTED) FOR NOW CONSIDER WITHOUT TIMER
 
         temp = liftStates.get(currentLiftID).getCurrentFloor();
         if (liftStates.get(currentLiftID).getMovingUp()) {
@@ -263,7 +277,7 @@ public class LiftControllerModel implements TimedFsmModel {
             liftStates.get(currentLiftID).setCurrentFloor(temp - 1);
         }
 
-
+     //   System.out.println("after move "+currentLiftID+ " " +  liftStates.get(0).allVarianbles() + liftStates.get(1).allVarianbles());
         liftStates.get(currentLiftID).setTimer(now);
         lifts = sut.getLifts();
         Assert.assertEquals("Lift is moving", true, lifts[currentLiftID].isMoving());
@@ -323,7 +337,7 @@ public class LiftControllerModel implements TimedFsmModel {
                                 && liftStates.get(currentLiftID).getDestinationFloor() == liftStates.get(currentLiftID).getCurrentFloor()
                     )
                             || (liftStates.get(currentLiftID).getLiftState().equals(LiftState.CLOSED) &&  liftStates.get(currentLiftID).getDestinationFloor() == -1)
-             )
+            )
 
                 return getState().equals(LiftControllerStates.SERVICING);
 
@@ -423,7 +437,7 @@ public class LiftControllerModel implements TimedFsmModel {
 
     public @Action
     void unguardedAction() throws InterruptedException {
-        System.out.println("now time " + now);
+        //System.out.println("now time " + now);
         //System.out.println("current time "+currentTimeSlot);
         TimeUnit.MILLISECONDS.sleep((getNextTimeIncrement(new Random())*100));
     }
@@ -433,20 +447,20 @@ public class LiftControllerModel implements TimedFsmModel {
     public void LiftSystemModelRunner() throws FileNotFoundException {
 
         final TimedModel timedModel = new TimedModel(new LiftControllerModel());
-        //    timedModel.setTimeoutProbability(0.5);
+         timedModel.setTimeoutProbability(0.01);
 
         final GreedyTester tester = new GreedyTester(timedModel);
-        tester.setRandom(new Random(100));
+        tester.setRandom(new Random());
         tester.setResetProbability(0.0001);
         final GraphListener graphListener = tester.buildGraph();
-        //    graphListener.printGraphDot("/users/Owner/Desktop/output.dot");
+        graphListener.printGraphDot("/users/Owner/Desktop/output.dot");
         tester.addListener(new StopOnFailureListener());
         tester.addListener("verbose");
         tester.addCoverageMetric(new TransitionPairCoverage());
         tester.addCoverageMetric(new TransitionCoverage());
         tester.addCoverageMetric(new StateCoverage());
         tester.addCoverageMetric(new ActionCoverage());
-        tester.generate(500);
+        tester.generate(1000);
         tester.printCoverage();
     }
 

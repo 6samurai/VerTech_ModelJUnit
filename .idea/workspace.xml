@@ -3,18 +3,18 @@
   <component name="ChangeListManager">
     <list default="true" id="cb98dfa9-1395-4746-8d04-f90d556de194" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/liftmania/Lift.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/liftmania/Lift.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/liftmania/LiftController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/liftmania/LiftController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/liftmania/gui/Shaft.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/liftmania/gui/Shaft.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/java/LiftControllerModel/LiftControllerModel.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/LiftControllerModel/LiftControllerModel.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/java/LiftControllerModel/LiftObject/LiftObject.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/LiftControllerModel/LiftObject/LiftObject.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/LiftModel/LiftOperatorModelTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/LiftModel/enums/LiftOperatorStates.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/MultipleLiftsModel_OLD_VERSION/MultipleLiftsModelTest.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/MultipleLiftsModel_OLD_VERSION/enums/MultipleLiftOperatorStates.java" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/src/test/java/SingleLiftModel/SingleLiftModelTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/SingleLiftModel/SingleLiftModelTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/META-INF/ModelJUnit_Section.kotlin_module" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/liftmania/Lift.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/liftmania/Lift.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/liftmania/LiftController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/liftmania/LiftController.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/liftmania/gui/Shaft.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/liftmania/gui/Shaft.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/target/test-classes/LiftControllerModel/LiftControllerModel.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/test-classes/LiftControllerModel/LiftControllerModel.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/test-classes/LiftControllerModel/LiftObject/LiftObject.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/test-classes/LiftControllerModel/LiftObject/LiftObject.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/test-classes/LiftModel/LiftOperatorModelTest.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/test-classes/LiftModel/enums/LiftOperatorStates.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/test-classes/MultipleLiftsModel_OLD_VERSION/MultipleLiftsModelTest.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/test-classes/MultipleLiftsModel_OLD_VERSION/enums/MultipleLiftOperatorStates.class" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/target/test-classes/SingleLiftModel/SingleLiftModelTest.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/test-classes/SingleLiftModel/SingleLiftModelTest.class" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/out/" />
@@ -28,30 +28,9 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="jar://$MAVEN_REPOSITORY$/nz/ac/waikato/modeljunit/modeljunit/2.5/modeljunit-2.5-sources.jar!/nz/ac/waikato/modeljunit/GreedyTester.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1819">
-              <caret line="127" selection-start-line="127" selection-end-line="127" />
-              <folding>
-                <element signature="e#3587#3588#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="jar://$MAVEN_REPOSITORY$/nz/ac/waikato/modeljunit/modeljunit/2.5/modeljunit-2.5-sources.jar!/nz/ac/waikato/modeljunit/Tester.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="3043">
-              <caret line="230" selection-start-line="230" selection-end-line="230" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/liftmania/LiftController.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="157">
+            <state relative-caret-position="2125">
               <caret line="132" column="48" selection-start-line="132" selection-start-column="31" selection-end-line="132" selection-end-column="48" />
               <folding>
                 <element signature="e#740#741#0" expanded="true" />
@@ -66,7 +45,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/LiftModel/LiftOperator.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="493">
+            <state relative-caret-position="1428">
               <caret line="92" column="3" selection-start-line="92" selection-start-column="3" selection-end-line="93" />
               <folding>
                 <element signature="imports" expanded="true" />
@@ -78,8 +57,8 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/java/com/liftmania/Lift.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="300">
-              <caret line="74" column="32" selection-start-line="74" selection-start-column="15" selection-end-line="74" selection-end-column="32" />
+            <state relative-caret-position="703">
+              <caret line="74" column="15" selection-start-line="74" selection-start-column="15" selection-end-line="74" selection-end-column="15" />
               <folding>
                 <element signature="e#258#259#0" expanded="true" />
                 <element signature="e#285#286#0" expanded="true" />
@@ -99,8 +78,8 @@
       <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/test/java/LiftControllerModel/LiftControllerModel.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="337">
-              <caret line="205" column="55" selection-start-line="205" selection-start-column="55" selection-end-line="205" selection-end-column="55" />
+            <state relative-caret-position="396">
+              <caret line="462" column="27" selection-start-line="462" selection-start-column="27" selection-end-line="462" selection-end-column="27" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -109,10 +88,32 @@
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/LiftModel/MultipleLiftOperator.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="295">
+              <caret line="60" column="26" selection-start-line="60" selection-start-column="26" selection-end-line="60" selection-end-column="26" />
+              <folding>
+                <element signature="imports" expanded="true" />
+                <element signature="e#1509#1515#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/test/java/LiftControllerModel/enums/LiftControllerStates.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="34">
+              <caret line="2" column="12" selection-start-line="2" selection-start-column="12" selection-end-line="2" selection-end-column="12" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/test/java/SingleLiftModel/SingleLiftModelTest.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="215">
-              <caret line="298" column="4" lean-forward="true" selection-start-line="298" selection-start-column="4" selection-end-line="312" selection-end-column="13" />
+            <state relative-caret-position="2046">
+              <caret line="288" column="49" selection-start-line="288" selection-start-column="49" selection-end-line="288" selection-end-column="49" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -123,8 +124,14 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/test/java/LiftControllerModel/LiftObject/LiftObject.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="969">
-              <caret line="83" column="4" selection-start-line="83" selection-start-column="4" selection-end-line="83" selection-end-column="4" />
+            <state relative-caret-position="193">
+              <caret line="71" column="19" selection-start-line="71" selection-start-column="19" selection-end-line="71" selection-end-column="19" />
+              <folding>
+                <element signature="e#618#619#0" expanded="true" />
+                <element signature="e#666#667#0" expanded="true" />
+                <element signature="e#1573#1574#0" expanded="true" />
+                <element signature="e#1609#1610#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -164,16 +171,7 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>thread</find>
-      <find>numFloors</find>
-      <find>action</find>
-      <find>idOffset</find>
-      <find>in</find>
-      <find>check</find>
-      <find>sut.</find>
-      <find>verify</find>
       <find>finalize</find>
-      <find>openDoor</find>
       <find>listOfLifts</find>
       <find>serviceList.remove(i);</find>
       <find>serviceList</find>
@@ -183,17 +181,26 @@
       <find>open</find>
       <find>verifyBehaviour</find>
       <find>animationStepsPerFloor</find>
-      <find>idle</find>
       <find>forced reset</find>
       <find>setDest</find>
-      <find>setMovingUp</find>
       <find>Thread.sleep(3000);</find>
       <find>Thread.sleep</find>
-      <find>move</find>
       <find>forceR</find>
       <find>deleteRequest</find>
       <find>distanceFromFloor</find>
+      <find>LiftModel</find>
+      <find>MultipleLiftOperator</find>
+      <find>idle</find>
+      <find>in close</find>
       <find>liftCall</find>
+      <find>openDoor</find>
+      <find>Exceeded height limits</find>
+      <find>getMoving</find>
+      <find>setMovingUp</find>
+      <find>moving up false</find>
+      <find>liftcall</find>
+      <find>move</find>
+      <find>in lift</find>
     </findStrings>
     <replaceStrings>
       <replace>invalid</replace>
@@ -247,9 +254,9 @@
         <option value="$PROJECT_DIR$/src/test/java/test/testCode.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/liftmania/Lift.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/liftmania/gui/Shaft.java" />
-        <option value="$PROJECT_DIR$/src/test/java/LiftControllerModel/LiftObject/LiftObject.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/liftmania/LiftController.java" />
         <option value="$PROJECT_DIR$/src/test/java/SingleLiftModel/SingleLiftModelTest.java" />
+        <option value="$PROJECT_DIR$/src/test/java/LiftControllerModel/LiftObject/LiftObject.java" />
         <option value="$PROJECT_DIR$/src/test/java/LiftControllerModel/LiftControllerModel.java" />
       </list>
     </option>
@@ -261,9 +268,20 @@
       </MavenImportingSettings>
     </option>
   </component>
+  <component name="MavenProjectNavigator">
+    <treeState>
+      <expand>
+        <path>
+          <item name="" type="16c1761:MavenProjectsStructure$RootNode" />
+          <item name="ModelJUnit_Section" type="9519ce18:MavenProjectsStructure$ProjectNode" />
+        </path>
+      </expand>
+      <select />
+    </treeState>
+  </component>
   <component name="ProjectFrameBounds" extendedState="6">
-    <option name="x" value="-185" />
-    <option name="y" value="201" />
+    <option name="x" value="2110" />
+    <option name="y" value="-4" />
     <option name="width" value="1936" />
     <option name="height" value="1056" />
   </component>
@@ -276,6 +294,7 @@
     </navigator>
     <panes>
       <pane id="PackagesPane" />
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -292,44 +311,6 @@
               <item name="ModelJUnit_Section" type="b2602c69:ProjectViewProjectNode" />
               <item name="ModelJUnit" type="462c0819:PsiDirectoryNode" />
               <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="ModelJUnit_Section" type="b2602c69:ProjectViewProjectNode" />
-              <item name="ModelJUnit" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="ModelJUnit_Section" type="b2602c69:ProjectViewProjectNode" />
-              <item name="ModelJUnit" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="liftmania" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="ModelJUnit_Section" type="b2602c69:ProjectViewProjectNode" />
-              <item name="ModelJUnit" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="liftmania" type="462c0819:PsiDirectoryNode" />
-              <item name="gui" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="ModelJUnit_Section" type="b2602c69:ProjectViewProjectNode" />
-              <item name="ModelJUnit" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="LiftModel" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="ModelJUnit_Section" type="b2602c69:ProjectViewProjectNode" />
-              <item name="ModelJUnit" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="test" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -353,25 +334,7 @@
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="test" type="462c0819:PsiDirectoryNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="LiftControllerModel" type="462c0819:PsiDirectoryNode" />
-              <item name="enums" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="ModelJUnit_Section" type="b2602c69:ProjectViewProjectNode" />
-              <item name="ModelJUnit" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="test" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
               <item name="SingleLiftModel" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="ModelJUnit_Section" type="b2602c69:ProjectViewProjectNode" />
-              <item name="ModelJUnit" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="test" type="462c0819:PsiDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="SingleLiftModel" type="462c0819:PsiDirectoryNode" />
-              <item name="enums" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="ModelJUnit_Section" type="b2602c69:ProjectViewProjectNode" />
@@ -382,13 +345,12 @@
           <select />
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="aspect.path.notification.shown" value="true" />
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1555324109494" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1556237933641" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/pom.xml" />
     <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
     <property name="nodejs_npm_path_reset_for_default_project" value="true" />
@@ -574,43 +536,45 @@
       <workItem from="1555161926642" duration="3421000" />
       <workItem from="1555240447584" duration="25118000" />
       <workItem from="1555316339084" duration="6943000" />
+      <workItem from="1555397246447" duration="1254000" />
+      <workItem from="1556186330017" duration="13722000" />
     </task>
     <servers />
   </component>
   <component name="TestHistory">
-    <history-entry file="LiftControllerModel - 2019.04.15 at 10h 29m 40s.xml">
+    <history-entry file="LiftControllerModel - 2019.04.26 at 01h 55m 27s.xml">
       <configuration name="LiftControllerModel" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="LiftControllerModel - 2019.04.15 at 10h 31m 21s.xml">
+    <history-entry file="LiftControllerModel - 2019.04.26 at 02h 01m 53s.xml">
       <configuration name="LiftControllerModel" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="LiftControllerModel - 2019.04.15 at 10h 32m 09s.xml">
+    <history-entry file="LiftControllerModel - 2019.04.26 at 02h 02m 26s.xml">
       <configuration name="LiftControllerModel" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="LiftControllerModel - 2019.04.15 at 10h 45m 36s.xml">
+    <history-entry file="LiftControllerModel - 2019.04.26 at 02h 04m 31s.xml">
       <configuration name="LiftControllerModel" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="LiftControllerModel - 2019.04.15 at 11h 17m 33s.xml">
+    <history-entry file="LiftControllerModel - 2019.04.26 at 02h 07m 12s.xml">
       <configuration name="LiftControllerModel" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="SingleLiftModelTest - 2019.04.15 at 11h 24m 07s.xml">
-      <configuration name="SingleLiftModelTest" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="SingleLiftModelTest - 2019.04.15 at 11h 24m 32s.xml">
-      <configuration name="SingleLiftModelTest" configurationId="JUnit" />
-    </history-entry>
-    <history-entry file="LiftControllerModel - 2019.04.15 at 11h 24m 51s.xml">
+    <history-entry file="LiftControllerModel - 2019.04.26 at 02h 12m 30s.xml">
       <configuration name="LiftControllerModel" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="LiftControllerModel - 2019.04.15 at 11h 29m 30s.xml">
+    <history-entry file="LiftControllerModel - 2019.04.26 at 02h 13m 22s.xml">
       <configuration name="LiftControllerModel" configurationId="JUnit" />
     </history-entry>
-    <history-entry file="LiftControllerModel - 2019.04.15 at 12h 29m 04s.xml">
+    <history-entry file="LiftControllerModel - 2019.04.26 at 02h 14m 06s.xml">
+      <configuration name="LiftControllerModel" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="LiftControllerModel - 2019.04.26 at 02h 17m 16s.xml">
+      <configuration name="LiftControllerModel" configurationId="JUnit" />
+    </history-entry>
+    <history-entry file="LiftControllerModel - 2019.04.26 at 02h 20m 07s.xml">
       <configuration name="LiftControllerModel" configurationId="JUnit" />
     </history-entry>
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="311501000" />
+    <option name="totallyTimeSpent" value="326477000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -622,10 +586,10 @@
     </todo-panel>
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="1936" height="1056" extended-state="6" />
+    <frame x="1912" y="-8" width="1936" height="1056" extended-state="6" />
     <editor active="true" />
     <layout>
-      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.14765458" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.15085287" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Image Layers" order="2" />
       <window_info id="Designer" order="3" />
@@ -634,7 +598,7 @@
       <window_info id="Favorites" order="6" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
       <window_info anchor="bottom" id="Find" order="1" sideWeight="0.49946696" weight="0.32936078" />
-      <window_info anchor="bottom" id="Run" order="2" sideWeight="0.8342217" weight="0.40195015" />
+      <window_info active="true" anchor="bottom" id="Run" order="2" sideWeight="0.8342217" visible="true" weight="0.34561214" />
       <window_info anchor="bottom" id="Debug" order="3" sideWeight="0.49413645" weight="0.16684724" />
       <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
@@ -652,9 +616,9 @@
       <window_info anchor="right" id="Palette" order="3" />
       <window_info anchor="right" id="Database" order="4" />
       <window_info anchor="right" id="Theme Preview" order="5" />
-      <window_info anchor="right" id="Maven" order="6" />
-      <window_info anchor="right" id="Capture Analysis" order="7" />
-      <window_info anchor="right" id="Palette&#9;" order="8" />
+      <window_info anchor="right" id="Capture Analysis" order="6" />
+      <window_info anchor="right" id="Palette&#9;" order="7" />
+      <window_info anchor="right" id="Maven" order="8" visible="true" weight="0.015991472" />
     </layout>
     <layout-to-restore>
       <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.15191898" />
@@ -715,19 +679,13 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/test/java/SingleLiftModel/SingleLiftModelTest.java</url>
-          <line>142</line>
+          <line>130</line>
           <properties />
           <option name="timeStamp" value="36" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
-          <url>file://$PROJECT_DIR$/src/test/java/SingleLiftModel/SingleLiftModelTest.java</url>
-          <line>144</line>
-          <properties />
-          <option name="timeStamp" value="37" />
-        </line-breakpoint>
-        <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/test/java/LiftControllerModel/LiftControllerModel.java</url>
-          <line>250</line>
+          <line>266</line>
           <properties />
           <option name="timeStamp" value="40" />
         </line-breakpoint>
@@ -739,13 +697,13 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/test/java/LiftControllerModel/LiftControllerModel.java</url>
-          <line>295</line>
+          <line>309</line>
           <properties />
           <option name="timeStamp" value="50" />
         </line-breakpoint>
         <line-breakpoint enabled="true" type="java-line">
           <url>file://$PROJECT_DIR$/src/test/java/LiftControllerModel/LiftControllerModel.java</url>
-          <line>338</line>
+          <line>352</line>
           <properties />
           <option name="timeStamp" value="51" />
         </line-breakpoint>
@@ -871,16 +829,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/java/LiftModel/LiftOperatorModelTest.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="323">
-          <caret line="30" selection-start-line="30" selection-end-line="30" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/test/java/MultipleLiftsModel_OLD_VERSION/MultipleLiftsModelTest.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="595">
@@ -979,17 +927,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/LiftModel/MultipleLiftOperator.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="935">
-          <caret line="63" selection-start-line="63" selection-end-line="63" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#1509#1515#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$MAVEN_REPOSITORY$/nz/ac/waikato/modeljunit/modeljunit/2.5/modeljunit-2.5.jar!/nz/ac/waikato/modeljunit/Tester.class">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1156">
@@ -1015,13 +952,6 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/../../../Masters Testing/Verification techinques/Assignment/LiftsController/src/com/liftmania/Lift.java">
       <provider selected="true" editor-type-id="text-editor" />
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/java/LiftControllerModel/enums/LiftControllerStates.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
-          <caret line="7" lean-forward="true" selection-start-line="7" selection-end-line="7" />
-        </state>
-      </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/../../../Assignment Submission/Task 2 - Runtime verification/Eclipse Project/elevatorSystemv1/src/com/liftmania/Lift.java">
       <provider selected="true" editor-type-id="text-editor" />
@@ -1078,10 +1008,26 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/test/java/LiftControllerModel/LiftObject/LiftObject.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/liftmania/LiftController.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="969">
-          <caret line="83" column="4" selection-start-line="83" selection-start-column="4" selection-end-line="83" selection-end-column="4" />
+        <state relative-caret-position="2125">
+          <caret line="132" column="48" selection-start-line="132" selection-start-column="31" selection-end-line="132" selection-end-column="48" />
+          <folding>
+            <element signature="e#740#741#0" expanded="true" />
+            <element signature="e#759#760#0" expanded="true" />
+            <element signature="e#996#997#0" expanded="true" />
+            <element signature="e#1044#1045#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/LiftModel/LiftOperator.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1428">
+          <caret line="92" column="3" selection-start-line="92" selection-start-column="3" selection-end-line="93" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -1105,10 +1051,27 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/LiftControllerModel/enums/LiftControllerStates.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="34">
+          <caret line="2" column="12" selection-start-line="2" selection-start-column="12" selection-end-line="2" selection-end-column="12" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/LiftModel/LiftOperatorModelTest.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="323">
+          <caret line="30" selection-start-line="30" selection-end-line="30" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/liftmania/Lift.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="300">
-          <caret line="74" column="32" selection-start-line="74" selection-start-column="15" selection-end-line="74" selection-end-column="32" />
+        <state relative-caret-position="703">
+          <caret line="74" column="15" selection-start-line="74" selection-start-column="15" selection-end-line="74" selection-end-column="15" />
           <folding>
             <element signature="e#258#259#0" expanded="true" />
             <element signature="e#285#286#0" expanded="true" />
@@ -1124,43 +1087,44 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/liftmania/LiftController.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/LiftModel/MultipleLiftOperator.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="157">
-          <caret line="132" column="48" selection-start-line="132" selection-start-column="31" selection-end-line="132" selection-end-column="48" />
-          <folding>
-            <element signature="e#740#741#0" expanded="true" />
-            <element signature="e#759#760#0" expanded="true" />
-            <element signature="e#996#997#0" expanded="true" />
-            <element signature="e#1044#1045#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/LiftModel/LiftOperator.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="493">
-          <caret line="92" column="3" selection-start-line="92" selection-start-column="3" selection-end-line="93" />
+        <state relative-caret-position="295">
+          <caret line="60" column="26" selection-start-line="60" selection-start-column="26" selection-end-line="60" selection-end-column="26" />
           <folding>
             <element signature="imports" expanded="true" />
+            <element signature="e#1509#1515#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/test/java/SingleLiftModel/SingleLiftModelTest.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="215">
-          <caret line="298" column="4" lean-forward="true" selection-start-line="298" selection-start-column="4" selection-end-line="312" selection-end-column="13" />
+        <state relative-caret-position="2046">
+          <caret line="288" column="49" selection-start-line="288" selection-start-column="49" selection-end-line="288" selection-end-column="49" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/test/java/LiftControllerModel/LiftObject/LiftObject.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="193">
+          <caret line="71" column="19" selection-start-line="71" selection-start-column="19" selection-end-line="71" selection-end-column="19" />
+          <folding>
+            <element signature="e#618#619#0" expanded="true" />
+            <element signature="e#666#667#0" expanded="true" />
+            <element signature="e#1573#1574#0" expanded="true" />
+            <element signature="e#1609#1610#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/test/java/LiftControllerModel/LiftControllerModel.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="337">
-          <caret line="205" column="55" selection-start-line="205" selection-start-column="55" selection-end-line="205" selection-end-column="55" />
+        <state relative-caret-position="396">
+          <caret line="462" column="27" selection-start-line="462" selection-start-column="27" selection-end-line="462" selection-end-column="27" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>

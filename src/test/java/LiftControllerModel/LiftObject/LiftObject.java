@@ -88,5 +88,11 @@ public class LiftObject {
     public LiftState getLiftState(){
         return this.liftState ;
     }
+
+
+    public String allVarianbles(){
+
+        return "current floor: " + currentFloor + "\ndoor open " + doorOpen + "\nmoving " + moving + "\nmoving up " + movingUp + "\ndestination " + destinationFloor + "\n";
+    }
 }
 
