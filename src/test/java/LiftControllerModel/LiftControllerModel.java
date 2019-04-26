@@ -65,9 +65,6 @@ public class LiftControllerModel implements TimedFsmModel {
            numFloors = random.nextInt(10) + 3;
            numLifts = random.nextInt(10) + 3;
 
-          //  numFloors = 2;
-           // numLifts = 2;
-
             sut = new LiftController(numFloors, numLifts, false);
 
             multipleLiftOperator = new MultipleLiftOperator(numFloors);
@@ -77,7 +74,6 @@ public class LiftControllerModel implements TimedFsmModel {
             serviceList = new ArrayList<ServiceList>();
 
             liftStates = new ArrayList<LiftObject>();
-          //  listOfLifts = new ArrayList<Lift>();
 
             buttonPressLists = new ArrayList<Lift>();
 
@@ -90,7 +86,6 @@ public class LiftControllerModel implements TimedFsmModel {
             firstOperation = true;
             for (int i = 0; i < numLifts; i++) {
                 liftStates.add(new LiftObject());
-               // listOfLifts.add(new Lift(i));
             }
         }
     }
@@ -108,7 +103,6 @@ public class LiftControllerModel implements TimedFsmModel {
     //idle to servicing states through callLiftToFloor
     public @Action
     void verifyBehaviour() {
-        System.out.println("in verify");
         check = false;
         boolean overFloorLimits = false;
         //to check if all of the call requests have been serviced
@@ -131,10 +125,6 @@ public class LiftControllerModel implements TimedFsmModel {
                 }
             }
 
-       /* if (serviceList.size() == 0 && !checkIfLiftsAreClosed()){
-            check = true;
-        }*/
-
         Assert.assertEquals("Expecting lift system to still be servicing requests ", false, check);
         Assert.assertEquals("Exceeded height limits "  + liftStates.get(0).allVarianbles() + liftStates.get(1).allVarianbles(), false, overFloorLimits);
     }
@@ -156,81 +146,90 @@ public class LiftControllerModel implements TimedFsmModel {
             firstOperation = false;
         }
 
-
         int randomFloorCall = random.nextInt(numFloors);
 
-
         buttonPressLists.clear();
-        buttonPressLists = multipleLiftOperator.getClosestLifts(lifts, randomFloorCall);
+        int randomBehaviour =random.nextInt(2);
         lifts = sut.getLifts();
+        int tempID =0;
+
+        if(randomBehaviour==1){
+            //this condition represents a move call press
+            //random lift selection
+            counter = random.nextInt(numLifts);
+            tempID =counter;
+
+            if(  liftStates.get(tempID).getDestinationFloor() == -1) {
+
+                liftStates.get(tempID).setDestinationFloor(randomFloorCall);
+                //set direction of lift
+                if ( liftStates.get(tempID).getCurrentFloor() > randomFloorCall)
+                    liftStates.get(tempID).setMovingUp(false);
+                else
+                    liftStates.get(tempID).setMovingUp(true);
 
 
-        if (lifts.length == 1)
-            Assert.assertEquals("Lift in SUT matches lift used", lifts[0].getId(), buttonPressLists.get(0));
-        else {
-            for (int i = 0; i < lifts.length; i++) {
-                for(int j = 0; j <buttonPressLists.size();j++){
-                    if (lifts[i].getId() == buttonPressLists.get(j).getId()) {
-                        counter++;
+            } else if(liftStates.get(tempID).getCurrentFloor() == randomFloorCall)
+                liftStates.get(tempID).setDestinationFloor(randomFloorCall);
+
+            createNewRequest(lifts[counter], randomFloorCall);
+
+        } else{
+            //this condition represents a call Lift press
+            buttonPressLists = multipleLiftOperator.getClosestLifts(lifts, randomFloorCall);
+
+            if (lifts.length == 1)
+                Assert.assertEquals("Lift in SUT matches lift used", lifts[0].getId(), buttonPressLists.get(0));
+            else {
+                for (int i = 0; i < lifts.length; i++) {
+                    for(int j = 0; j <buttonPressLists.size();j++){
+                        if (lifts[i].getId() == buttonPressLists.get(j).getId()) {
+                            counter++;
+                        }
+                    }
+
+                }
+                Assert.assertEquals("Lift in SUT matches lift used: ", counter, buttonPressLists.size());
+            }
+
+            counter =random.nextInt(buttonPressLists.size());
+            //current lift
+            tempID = buttonPressLists.get(counter).getId();
+            createNewRequest(buttonPressLists.get(counter), randomFloorCall);
+
+            LiftObject tempObject =  liftStates.get(tempID);
+
+            //if current lift does not have destination floor
+            if(  tempObject.getDestinationFloor() == -1){
+
+                liftStates.get(tempID).setDestinationFloor(randomFloorCall);
+                //set direction of lift
+                if(  tempObject.getCurrentFloor()>randomFloorCall)
+                    liftStates.get(tempID).setMovingUp(false);
+                else
+                    liftStates.get(tempID).setMovingUp(true);
+            } else {
+                //if current floor of lift = input received
+                if(tempObject.getCurrentFloor() == randomFloorCall){
+                    liftStates.get(tempID).setDestinationFloor(randomFloorCall);
+                } else{
+                    int currentDistance =   tempObject.getDestinationFloor() - tempObject.getCurrentFloor();
+                    int tempDistance =  randomFloorCall - tempObject.getCurrentFloor();
+                    //checks if current servicing direction of lift is the same as new request
+                    if(tempObject.getMovingUp() ){
+
+                        if( tempDistance>0 && tempDistance<currentDistance)
+                            liftStates.get(tempID).setDestinationFloor(randomFloorCall);
+
+                    } else{
+                        if( tempDistance<0 && tempDistance>currentDistance )
+                            liftStates.get(tempID).setDestinationFloor(randomFloorCall);
+
                     }
                 }
-
             }
-            Assert.assertEquals("Lift in SUT matches lift used: ", counter, buttonPressLists.size());
         }
-
-        System.out.println("in lift call before " + liftStates.get(0).allVarianbles() + liftStates.get(1).allVarianbles());
-
-        counter =random.nextInt(buttonPressLists.size());
-        createNewRequest(buttonPressLists.get(counter), randomFloorCall);
-        //current lift
-        int tempID = buttonPressLists.get(counter).getId();
-        LiftObject tempObject =  liftStates.get(tempID);
-        System.out.println("temp object "+ counter +"\n" + tempObject.allVarianbles() );
-
-        //if current lift does not have destination floor
-        if(  tempObject.getDestinationFloor() == -1){
-
-            liftStates.get(tempID).setDestinationFloor(randomFloorCall);
-            //set direction of lift
-            if(  tempObject.getCurrentFloor()>randomFloorCall)
-                liftStates.get(tempID).setMovingUp(false);
-            else
-                liftStates.get(tempID).setMovingUp(true);
-        } else {
-            //if current floor of lift = input received
-            if(tempObject.getCurrentFloor() == randomFloorCall){
-                liftStates.get(tempID).setDestinationFloor(randomFloorCall);
-            } else{
-                int currentDistance =   tempObject.getDestinationFloor() - tempObject.getCurrentFloor();
-                int tempDistance =  randomFloorCall - tempObject.getCurrentFloor();
-                //checks if current servicing direction of lift is the same as new request
-                if(tempObject.getMovingUp() ){
-
-                    if( tempDistance>0 && tempDistance<currentDistance)
-                        liftStates.get(tempID).setDestinationFloor(randomFloorCall);
-
-                } else{
-                    if( tempDistance<0 && tempDistance>currentDistance )
-                        liftStates.get(tempID).setDestinationFloor(randomFloorCall);
-
-                }
-            }
-
-
-     /*       if( (liftStates.get(counter).getDestinationFloor() -  liftStates.get(counter).getCurrentFloor()> counter && liftStates.get(counter).getMovingUp() )||
-                    (liftStates.get(counter).getDestinationFloor()< counter && !liftStates.get(counter).getMovingUp())
-             )
-            {
-
-            }*/
-
-        }
-
-        System.out.println("in lift call" + liftStates.get(0).allVarianbles() + liftStates.get(1).allVarianbles());
-
-        liftStates.get(tempID).setLiftState(LiftState.LIFT_CALL);
-
+       liftStates.get(tempID).setLiftState(LiftState.LIFT_CALL);
     }
 
     public boolean moveGuard() {
@@ -250,13 +249,8 @@ public class LiftControllerModel implements TimedFsmModel {
                     && liftStates.get(currentLiftID).getDestinationFloor() != liftStates.get(currentLiftID).getCurrentFloor() && !liftStates.get(currentLiftID).getDoorOpen() && !lifts[currentLiftID].isOpen()
 
                     && serviceList.size()>0){
-
-             //   System.out.println("currentLiftID" + currentLiftID);
                 return getState().equals(LiftControllerStates.SERVICING);
             }
-
-
-
         return false;
     }
 
@@ -277,7 +271,6 @@ public class LiftControllerModel implements TimedFsmModel {
             liftStates.get(currentLiftID).setCurrentFloor(temp - 1);
         }
 
-     //   System.out.println("after move "+currentLiftID+ " " +  liftStates.get(0).allVarianbles() + liftStates.get(1).allVarianbles());
         liftStates.get(currentLiftID).setTimer(now);
         lifts = sut.getLifts();
         Assert.assertEquals("Lift is moving", true, lifts[currentLiftID].isMoving());
@@ -289,7 +282,6 @@ public class LiftControllerModel implements TimedFsmModel {
         currentLiftID = (now-idOffset) % (numLifts+2);
 
         if(currentLiftID<numLifts){
-      //      System.out.println(" now " + now + " get time " + liftStates.get(currentLiftID).getTimer());
             if (
                     (
                             ( liftStates.get(currentLiftID).getLiftState().equals(LiftState.MOVING)  && (now - liftStates.get(currentLiftID).getTimer()>3) )
@@ -299,8 +291,6 @@ public class LiftControllerModel implements TimedFsmModel {
             )
                 return getState().equals(LiftControllerStates.SERVICING);
         }
-
-
         return false;
     }
 
@@ -313,9 +303,6 @@ public class LiftControllerModel implements TimedFsmModel {
         liftStates.get(currentLiftID).setDoorOpen(true);
 
         sut.openLiftDoor(currentLiftID, lifts[currentLiftID].getFloor());
-     /*   try {
-            Thread.sleep(3000);
-        } catch (Exception e) {}*/
         liftStates.get(currentLiftID).setTimer(now);
         lifts = sut.getLifts();
         Assert.assertEquals("Lift is not moving", false,  lifts[currentLiftID].isMoving());
@@ -323,7 +310,6 @@ public class LiftControllerModel implements TimedFsmModel {
     }
 
     public boolean closeDoorGuard() {
-
         currentLiftID = (now-idOffset) % (numLifts+2);
 
         if(currentLiftID<numLifts)
@@ -341,7 +327,6 @@ public class LiftControllerModel implements TimedFsmModel {
 
                 return getState().equals(LiftControllerStates.SERVICING);
 
-    //    System.out.println("before return false");
         return false;
     }
 
@@ -349,7 +334,6 @@ public class LiftControllerModel implements TimedFsmModel {
     public @Action
     void closeDoor() {
         int tempDest = -1;
-        System.out.println("in close");
         modelState = LiftControllerStates.SERVICING;
         if(liftStates.get(currentLiftID).getDestinationFloor()!=-1){
 
@@ -397,20 +381,12 @@ public class LiftControllerModel implements TimedFsmModel {
     //idle to servicing states through callLiftToFloor
     public @Action
     void finalizeBehaviour() {
-        System.out.println("in finalize beh");
-
         if (serviceList.size() > 0) {
             modelState = LiftControllerStates.SERVICING;
 
         } else {
             modelState = LiftControllerStates.IDLE;
         }
-
-      /*  try {
-            Thread.sleep(300);
-        } catch (Exception e) {}*/
-    //    Assert.assertEquals("Expecting lift system to still be servicing requests ", true, check);
-
     }
 
     public boolean idleGuard() {
@@ -429,7 +405,6 @@ public class LiftControllerModel implements TimedFsmModel {
     public @Action
     void idle() {
         modelState = LiftControllerStates.IDLE;
-        System.out.println("in idle");
         Assert.assertEquals("Service lift is not empty ", 0, serviceList.size());
 
     }
@@ -437,8 +412,6 @@ public class LiftControllerModel implements TimedFsmModel {
 
     public @Action
     void unguardedAction() throws InterruptedException {
-        //System.out.println("now time " + now);
-        //System.out.println("current time "+currentTimeSlot);
         TimeUnit.MILLISECONDS.sleep((getNextTimeIncrement(new Random())*100));
     }
 
@@ -463,20 +436,6 @@ public class LiftControllerModel implements TimedFsmModel {
         tester.generate(1000);
         tester.printCoverage();
     }
-
- /*   // if false - then there are lifts that are not in the Closed state
-    boolean checkIfLiftsAreClosed() {
-        check = true;
-        for (int i = 0; i < liftStates.size(); i++) {
-
-            if (!liftStates.get(i).getLiftState().equals(LiftState.CLOSED)) {
-                check = false;
-                break;
-            }
-
-        }
-        return check;
-    }*/
 
     private void deleteRequest(Lift lift) {
 
@@ -526,77 +485,4 @@ public class LiftControllerModel implements TimedFsmModel {
         return serviceEntryPresent;
 
     }
-
-
-
-
-  /*  public boolean getButtonPressGuard() {
-        return getState().equals(LiftControllerStates.IDLE)  ;
-    }
-
-    //idle to servicing states through callLiftToFloor
-    public @Action
-    void getButtonPress() {
-        int check = 0;
-        modelState = LiftControllerStates.SERVICING;
-
-        int randomFloorCall = random.nextInt(numFloors);
-
-        ArrayList<Lift> sutListOfLifts = sut.getClosestLifts(randomFloorCall);
-
-        listOfLifts = multipleLiftOperator.getClosestLifts(lifts, randomFloorCall);
-
-
-        if(listOfLifts.size()<=1)
-            Assert.assertEquals("Lift in SUT matches lift used", sut.getLifts()[sutListOfLifts.get(0).getId()], listOfLifts.get(0));
-        else{
-            for(int i = 0; i<listOfLifts.size();i++){
-                if(sutListOfLifts.get(i).getId()== listOfLifts.get(i).getId()){
-                    check++;
-                }
-            }
-            Assert.assertEquals("Lift in SUT matches lift used: " + check +"list of Lifts size: " +listOfLifts.size() + " sut lift size:" +sutListOfLifts.size()  ,check, listOfLifts.size());
-        }
-
-        lift = multipleLiftOperator.getClosestLift(listOfLifts);
-
-        createNewRequest(lift, randomFloorCall);
-        liftStates.get(lift.getId()).setLiftState(LiftState.LIFT_CALL);
-
-    }
-
-
-
-    public boolean systemActionGuard() {
-
-        return  getState().equals(LiftControllerStates.SERVICING) && serviceList.size()!=0;
-    }
-
-    //idle to servicing states through callLiftToFloor
-    public @Action
-    void systemAction() {
-
-
-        for(int i = 0; i < liftStates.size();i++){
-            if(!liftStates.get(i).getLiftState().equals(LiftState.CLOSED)){
-
-
-             if(liftStates.get(i).getLiftState().equals(LiftState.LIFT_CALL)){
-
-             } else if(liftStates.get(i).getLiftState().equals(LiftState.OPEN)){
-
-
-
-             }else if(liftStates.get(i).getLiftState().equals(LiftState.MOVING)){
-
-             }
-            }
-
-        }
-
-
-        Assert.assertEquals("Service lift is not empty " ,0, serviceList.size());
-
-    }
-*/
 }
